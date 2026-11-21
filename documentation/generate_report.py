@@ -78,7 +78,9 @@ def build_docx_report(output_path: str):
         "Project Team: DEEP KNIGHTS\n"
         "Team Size: 4 Members\n\n"
         "Department of Computer Science & Engineering\n"
-        "Academic Year 2026\n"
+        "Academic Year 2026\n\n"
+        "Source Code: https://github.com/HaMaMi-1/KnightScope\n"
+        "Live Demonstration: https://knightscope-classic.onrender.com\n"
     )
     r_meta.font.name = "Arial"
     r_meta.font.size = Pt(12)
@@ -543,7 +545,9 @@ def build_docx_report(output_path: str):
         "5. Campbell, Murray, Hoane, A. Joseph, & Hsu, Feng-hsiung. (2002). Deep Blue. Artificial Intelligence, Vol. 134, Iss. 1–2, pp. 57–83.",
         "6. Michniewski, Tomasz. (2014). Simplified Evaluation Function. Chess Programming Wiki (CPW).",
         "7. Finkelstein, Lev, & Markovitch, Shaul. (1998). Learning to Play Chess Using Heuristic Search and Selective Deepening. Annals of Mathematics and Artificial Intelligence, Vol. 24, pp. 223–242.",
-        "8. Fierz, Martin. (2001). Strategy and Search in Computer Chess: The Architecture of Chess Engines. ICGA Journal, Vol. 24, No. 2, pp. 71–84."
+        "8. Fierz, Martin. (2001). Strategy and Search in Computer Chess: The Architecture of Chess Engines. ICGA Journal, Vol. 24, No. 2, pp. 71–84.",
+        "9. KnightScope Source Code Repository: https://github.com/HaMaMi-1/KnightScope",
+        "10. KnightScope Public Web Demonstration: https://knightscope-classic.onrender.com"
     ]
     for ref in refs:
         doc.add_paragraph(ref)
