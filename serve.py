@@ -20,6 +20,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         return super().do_GET()
 
 
-with socketserver.TCPServer(("", PORT), Handler) as httpd:
-    print(f"KnightScope serving on port {PORT}")
-    httpd.serve_forever()
+if __name__ == "__main__":
+    with socketserver.TCPServer(("", PORT), Handler) as httpd:
+        print(f"KnightScope serving on port {PORT}")
+        httpd.serve_forever()
