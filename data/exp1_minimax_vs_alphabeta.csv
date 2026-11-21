@@ -1,0 +1,31 @@
+experiment,position_id,position_name,depth,minimax_time_s,alphabeta_time_s,speedup,minimax_nodes,alphabeta_nodes,pruned_branches,node_reduction_pct,minimax_score,alphabeta_score,score_match,minimax_move,alphabeta_move,move_match
+Exp1_Minimax_vs_AlphaBeta,pos_01,Balanced Opening Position (Italian Game),1,0.00997,0.01036,0.96,36,36,0,0.0,-132,-132,True,Nxe4,Nxe4,True
+Exp1_Minimax_vs_AlphaBeta,pos_01,Balanced Opening Position (Italian Game),2,0.60933,0.06488,9.39,1422,157,1265,88.96,111,111,True,O-O,O-O,True
+Exp1_Minimax_vs_AlphaBeta,pos_01,Balanced Opening Position (Italian Game),3,21.87296,0.97892,22.34,49426,2245,3879,95.46,-198,-198,True,Bb4,Bb4,True
+Exp1_Minimax_vs_AlphaBeta,pos_02,Material Advantage (White +Rook),1,0.00623,0.00635,0.98,26,26,0,0.0,142,142,True,Nxe5,Nxe5,True
+Exp1_Minimax_vs_AlphaBeta,pos_02,Material Advantage (White +Rook),2,0.27097,0.10866,2.49,778,306,472,60.67,-19,-19,True,Bc4,Bc4,True
+Exp1_Minimax_vs_AlphaBeta,pos_02,Material Advantage (White +Rook),3,8.35418,0.52941,15.78,21695,1400,3455,93.55,163,163,True,Bb5,Bb5,True
+Exp1_Minimax_vs_AlphaBeta,pos_03,Material Disadvantage (White -Bishop),1,0.00697,0.00668,1.04,27,27,0,0.0,422,422,True,Nxe5,Nxe5,True
+Exp1_Minimax_vs_AlphaBeta,pos_03,Material Disadvantage (White -Bishop),2,0.28191,0.07898,3.57,756,209,547,72.35,193,193,True,Nc3,Nc3,True
+Exp1_Minimax_vs_AlphaBeta,pos_03,Material Disadvantage (White -Bishop),3,8.82028,0.48757,18.09,21895,1207,2975,94.49,441,441,True,Bb5,Bb5,True
+Exp1_Minimax_vs_AlphaBeta,pos_04,Tactical Capture Opportunity (Knight Fork),1,0.01077,0.01085,0.99,32,32,0,0.0,322,322,True,Bxd5,Bxd5,True
+Exp1_Minimax_vs_AlphaBeta,pos_04,Tactical Capture Opportunity (Knight Fork),2,0.63936,0.04295,14.88,1488,104,1384,93.01,-70,-70,True,Bxd5,Bxd5,True
+Exp1_Minimax_vs_AlphaBeta,pos_04,Tactical Capture Opportunity (Knight Fork),3,26.25365,0.27217,96.46,50969,574,4252,98.87,96,96,True,Nxe5,Nxe5,True
+Exp1_Minimax_vs_AlphaBeta,pos_05,King Safety Vulnerability (Exposed Black King),1,0.01056,0.01097,0.96,38,38,0,0.0,159,159,True,Nxe5,Nxe5,True
+Exp1_Minimax_vs_AlphaBeta,pos_05,King Safety Vulnerability (Exposed Black King),2,0.60489,0.07928,7.63,1405,192,1213,86.33,-85,-85,True,Nd5,Nd5,True
+Exp1_Minimax_vs_AlphaBeta,pos_05,King Safety Vulnerability (Exposed Black King),3,23.38482,1.42535,16.41,52267,3241,6628,93.8,176,176,True,Bd5,Bd5,True
+Exp1_Minimax_vs_AlphaBeta,pos_06,Forced Checkmate Opportunity (Mate-in-2),1,0.00973,0.00966,1.01,43,43,0,0.0,19999,19999,True,Qxf7#,Qxf7#,True
+Exp1_Minimax_vs_AlphaBeta,pos_06,Forced Checkmate Opportunity (Mate-in-2),2,0.53883,0.0282,19.11,1176,85,1091,92.77,19999,19999,True,Qxf7#,Qxf7#,True
+Exp1_Minimax_vs_AlphaBeta,pos_06,Forced Checkmate Opportunity (Mate-in-2),3,19.13106,0.58034,32.97,46871,1420,1091,96.97,19999,19999,True,Qxf7#,Qxf7#,True
+Exp1_Minimax_vs_AlphaBeta,pos_07,Defensive Resiliency (Countering Bishop Pin),1,0.00991,0.00972,1.02,33,33,0,0.0,-208,-208,True,Nxe4,Nxe4,True
+Exp1_Minimax_vs_AlphaBeta,pos_07,Defensive Resiliency (Countering Bishop Pin),2,0.52932,0.1046,5.06,1150,232,918,79.83,69,69,True,Bc5,Bc5,True
+Exp1_Minimax_vs_AlphaBeta,pos_07,Defensive Resiliency (Countering Bishop Pin),3,17.4539,0.69906,24.97,37533,1589,6862,95.77,-174,-174,True,Bc5,Bc5,True
+Exp1_Minimax_vs_AlphaBeta,pos_08,Tactical Poisoned Pawn (Greedy Failure Trap),1,0.01275,0.01287,0.99,41,41,0,0.0,77,77,True,Bxh7,Bxh7,True
+Exp1_Minimax_vs_AlphaBeta,pos_08,Tactical Poisoned Pawn (Greedy Failure Trap),2,0.70654,0.05169,13.67,1465,116,1349,92.08,-44,-44,True,dxc5,dxc5,True
+Exp1_Minimax_vs_AlphaBeta,pos_08,Tactical Poisoned Pawn (Greedy Failure Trap),3,28.33351,0.9862,28.73,57485,2010,6100,96.5,168,168,True,Bb5,Bb5,True
+Exp1_Minimax_vs_AlphaBeta,pos_09,Endgame Pawn Breakthrough,1,0.00114,0.0011,1.04,8,8,0,0.0,99,99,True,Kd3,Kd3,True
+Exp1_Minimax_vs_AlphaBeta,pos_09,Endgame Pawn Breakthrough,2,0.01076,0.00367,2.93,60,22,38,63.33,78,78,True,Kd3,Kd3,True
+Exp1_Minimax_vs_AlphaBeta,pos_09,Endgame Pawn Breakthrough,3,0.07877,0.0176,4.48,428,91,61,78.74,86,86,True,Kd3,Kd3,True
+Exp1_Minimax_vs_AlphaBeta,pos_10,Complex Middlegame (Sicilian Defense),1,0.01326,0.01174,1.13,43,43,0,0.0,390,390,True,Nxc6,Nxc6,True
+Exp1_Minimax_vs_AlphaBeta,pos_10,Complex Middlegame (Sicilian Defense),2,0.71559,0.05044,14.19,1479,115,1364,92.22,73,73,True,Nxc6,Nxc6,True
+Exp1_Minimax_vs_AlphaBeta,pos_10,Complex Middlegame (Sicilian Defense),3,28.0679,0.85438,32.85,62945,1930,3859,96.93,294,294,True,Bb5,Bb5,True

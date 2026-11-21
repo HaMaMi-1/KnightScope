@@ -1,0 +1,41 @@
+experiment,position_id,position_name,depth,execution_time_s,nodes_explored,pruned_branches,score_cp,best_move_san,pv_san
+Exp2_Search_Depth,pos_01,Balanced Opening Position (Italian Game),1,0.01181,36,0,-132,Nxe4,Nxe4
+Exp2_Search_Depth,pos_01,Balanced Opening Position (Italian Game),2,0.06746,157,1265,111,O-O,O-O Nxe5
+Exp2_Search_Depth,pos_01,Balanced Opening Position (Italian Game),3,1.11474,2245,3879,-198,Bb4,Bb4 Nxe5 Nxe5
+Exp2_Search_Depth,pos_01,Balanced Opening Position (Italian Game),4,9.42908,20656,99292,63,Bb4,Bb4 O-O Bxc3 bxc3
+Exp2_Search_Depth,pos_02,Material Advantage (White +Rook),1,0.00699,26,0,142,Nxe5,Nxe5
+Exp2_Search_Depth,pos_02,Material Advantage (White +Rook),2,0.12281,306,472,-19,Bc4,Bc4 d5
+Exp2_Search_Depth,pos_02,Material Advantage (White +Rook),3,0.56828,1400,3455,163,Bb5,Bb5 Ne7 Nxe5
+Exp2_Search_Depth,pos_02,Material Advantage (White +Rook),4,3.28275,8490,42036,-26,Bb5,Bb5 Bc5 Bxc6 dxc6
+Exp2_Search_Depth,pos_03,Material Disadvantage (White -Bishop),1,0.00765,27,0,422,Nxe5,Nxe5
+Exp2_Search_Depth,pos_03,Material Disadvantage (White -Bishop),2,0.08428,209,547,193,Nc3,Nc3 Nxe4
+Exp2_Search_Depth,pos_03,Material Disadvantage (White -Bishop),3,0.51469,1207,2975,441,Bb5,Bb5 Ne7 Nxe5
+Exp2_Search_Depth,pos_03,Material Disadvantage (White -Bishop),4,3.48094,8319,37797,193,Nc3,Nc3 O-O d4 Nxe4
+Exp2_Search_Depth,pos_04,Tactical Capture Opportunity (Knight Fork),1,0.0113,32,0,322,Bxd5,Bxd5
+Exp2_Search_Depth,pos_04,Tactical Capture Opportunity (Knight Fork),2,0.04231,104,1384,-70,Bxd5,Bxd5 Qxd5
+Exp2_Search_Depth,pos_04,Tactical Capture Opportunity (Knight Fork),3,0.29683,574,4252,96,Nxe5,Nxe5 Bxc3+ bxc3
+Exp2_Search_Depth,pos_04,Tactical Capture Opportunity (Knight Fork),4,11.26873,23722,76842,-173,a3,a3 Nxc3 bxc3 Qxd3
+Exp2_Search_Depth,pos_05,King Safety Vulnerability (Exposed Black King),1,0.01267,38,0,159,Nxe5,Nxe5
+Exp2_Search_Depth,pos_05,King Safety Vulnerability (Exposed Black King),2,0.08607,192,1213,-85,Nd5,Nd5 Nxf2
+Exp2_Search_Depth,pos_05,King Safety Vulnerability (Exposed Black King),3,1.70297,3241,6628,176,Bd5,Bd5 Ne7 Nxe5
+Exp2_Search_Depth,pos_05,King Safety Vulnerability (Exposed Black King),4,3.37715,6941,40912,-162,Bd5,Bd5 Bxf2+ Kh1 Nxh2
+Exp2_Search_Depth,pos_06,Forced Checkmate Opportunity (Mate-in-2),1,0.01378,43,0,19999,Qxf7#,Qxf7#
+Exp2_Search_Depth,pos_06,Forced Checkmate Opportunity (Mate-in-2),2,0.03685,85,1091,19999,Qxf7#,Qxf7#
+Exp2_Search_Depth,pos_06,Forced Checkmate Opportunity (Mate-in-2),3,0.63355,1420,1091,19999,Qxf7#,Qxf7#
+Exp2_Search_Depth,pos_06,Forced Checkmate Opportunity (Mate-in-2),4,1.20186,2796,40657,19999,Qxf7#,Qxf7#
+Exp2_Search_Depth,pos_07,Defensive Resiliency (Countering Bishop Pin),1,0.01109,33,0,-208,Nxe4,Nxe4
+Exp2_Search_Depth,pos_07,Defensive Resiliency (Countering Bishop Pin),2,0.11335,232,918,69,Bc5,Bc5 Nxe5
+Exp2_Search_Depth,pos_07,Defensive Resiliency (Countering Bishop Pin),3,0.80955,1589,6862,-174,Bc5,Bc5 O-O Nxe4
+Exp2_Search_Depth,pos_07,Defensive Resiliency (Countering Bishop Pin),4,4.75873,9438,50736,78,Bc5,Bc5 Qa4 Ne7 Nxe5
+Exp2_Search_Depth,pos_08,Tactical Poisoned Pawn (Greedy Failure Trap),1,0.01567,41,0,77,Bxh7,Bxh7
+Exp2_Search_Depth,pos_08,Tactical Poisoned Pawn (Greedy Failure Trap),2,0.06835,116,1349,-44,dxc5,dxc5 Bxc5
+Exp2_Search_Depth,pos_08,Tactical Poisoned Pawn (Greedy Failure Trap),3,1.12611,2010,6100,168,Bb5,Bb5 cxd4 Bxc6+
+Exp2_Search_Depth,pos_08,Tactical Poisoned Pawn (Greedy Failure Trap),4,3.955,7293,67356,-57,Bb5,Bb5 cxd4 cxd4 O-O
+Exp2_Search_Depth,pos_09,Endgame Pawn Breakthrough,1,0.00127,8,0,99,Kd3,Kd3
+Exp2_Search_Depth,pos_09,Endgame Pawn Breakthrough,2,0.00419,22,38,78,Kd3,Kd3 Kb5
+Exp2_Search_Depth,pos_09,Endgame Pawn Breakthrough,3,0.01927,91,61,86,Kd3,Kd3 Kb5 f5
+Exp2_Search_Depth,pos_09,Endgame Pawn Breakthrough,4,0.04666,230,484,46,Kc3,Kc3 Kb5 Kd3 Kc6
+Exp2_Search_Depth,pos_10,Complex Middlegame (Sicilian Defense),1,0.01328,43,0,390,Nxc6,Nxc6
+Exp2_Search_Depth,pos_10,Complex Middlegame (Sicilian Defense),2,0.05667,115,1364,73,Nxc6,Nxc6 bxc6
+Exp2_Search_Depth,pos_10,Complex Middlegame (Sicilian Defense),3,0.93103,1930,3859,294,Bb5,Bb5 Nxe4 Nxe4
+Exp2_Search_Depth,pos_10,Complex Middlegame (Sicilian Defense),4,2.63209,5536,68045,41,Bb5,Bb5 Bd7 Nxc6 Bxc6

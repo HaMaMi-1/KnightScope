@@ -1,0 +1,11 @@
+experiment,position_id,position_name,category,greedy_move,greedy_eval_1ply,adversarial_move_d3,adversarial_eval_d3,moves_agree,greedy_nodes,adversarial_nodes,tactical_divergence_noted
+Exp3_Greedy_vs_Adversarial,pos_01,Balanced Opening Position (Italian Game),Balanced opening position,Nxe4,-132,Bb4,-198,False,36,2245,True
+Exp3_Greedy_vs_Adversarial,pos_02,Material Advantage (White +Rook),Material advantage,Nxe5,142,Bb5,163,False,26,1400,True
+Exp3_Greedy_vs_Adversarial,pos_03,Material Disadvantage (White -Bishop),Material disadvantage,Nxe5,422,Bb5,441,False,27,1207,True
+Exp3_Greedy_vs_Adversarial,pos_04,Tactical Capture Opportunity (Knight Fork),Tactical capture opportunity,Bxd5,322,Nxe5,96,False,32,574,True
+Exp3_Greedy_vs_Adversarial,pos_05,King Safety Vulnerability (Exposed Black King),King safety problem,Nxe5,159,Bd5,176,False,38,3241,True
+Exp3_Greedy_vs_Adversarial,pos_06,Forced Checkmate Opportunity (Mate-in-2),Checkmate opportunity,Qxf7#,19999,Qxf7#,19999,True,43,1420,False
+Exp3_Greedy_vs_Adversarial,pos_07,Defensive Resiliency (Countering Bishop Pin),Defensive position,Nxe4,-208,Bc5,-174,False,33,1589,True
+Exp3_Greedy_vs_Adversarial,pos_08,Tactical Poisoned Pawn (Greedy Failure Trap),Tactical position where greedy evaluation may fail,Bxh7,77,Bb5,168,False,41,2010,True
+Exp3_Greedy_vs_Adversarial,pos_09,Endgame Pawn Breakthrough,Endgame position,Kd3,99,Kd3,86,True,8,91,False
+Exp3_Greedy_vs_Adversarial,pos_10,Complex Middlegame (Sicilian Defense),Complex middlegame,Nxc6,390,Bb5,294,False,43,1930,True

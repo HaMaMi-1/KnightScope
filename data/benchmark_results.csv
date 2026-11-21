@@ -1,0 +1,81 @@
+position_id,position_name,category,fen,algorithm,depth,target_depth,execution_time_sec,nodes_explored,pruned_branches,score_cp,best_move_uci,best_move_san,nodes_per_second
+pos_01,Balanced Opening Position (Italian Game),Balanced opening position,r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/2NP1N2/PPP2PPP/R1BQK2R b KQkq - 0 5,Minimax,1,1,0.00997,36,0,-132,Nxe4,Nxe4,3610.8
+pos_01,Balanced Opening Position (Italian Game),Balanced opening position,r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/2NP1N2/PPP2PPP/R1BQK2R b KQkq - 0 5,AlphaBeta,1,1,0.01036,36,0,-132,Nxe4,Nxe4,3474.9
+pos_01,Balanced Opening Position (Italian Game),Balanced opening position,r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/2NP1N2/PPP2PPP/R1BQK2R b KQkq - 0 5,Minimax,2,2,0.60933,1422,0,111,O-O,O-O,2333.7
+pos_01,Balanced Opening Position (Italian Game),Balanced opening position,r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/2NP1N2/PPP2PPP/R1BQK2R b KQkq - 0 5,AlphaBeta,2,2,0.06488,157,1265,111,O-O,O-O,2419.9
+pos_01,Balanced Opening Position (Italian Game),Balanced opening position,r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/2NP1N2/PPP2PPP/R1BQK2R b KQkq - 0 5,Minimax,3,3,21.87296,49426,0,-198,Bb4,Bb4,2259.7
+pos_01,Balanced Opening Position (Italian Game),Balanced opening position,r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/2NP1N2/PPP2PPP/R1BQK2R b KQkq - 0 5,AlphaBeta,3,3,0.97892,2245,3879,-198,Bb4,Bb4,2293.3
+pos_02,Material Advantage (White +Rook),Material advantage,r1bqkb1r/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/R1BQKB1R w KQkq - 0 5,Minimax,1,1,0.00623,26,0,142,Nxe5,Nxe5,4173.4
+pos_02,Material Advantage (White +Rook),Material advantage,r1bqkb1r/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/R1BQKB1R w KQkq - 0 5,AlphaBeta,1,1,0.00635,26,0,142,Nxe5,Nxe5,4094.5
+pos_02,Material Advantage (White +Rook),Material advantage,r1bqkb1r/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/R1BQKB1R w KQkq - 0 5,Minimax,2,2,0.27097,778,0,-19,Bc4,Bc4,2871.2
+pos_02,Material Advantage (White +Rook),Material advantage,r1bqkb1r/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/R1BQKB1R w KQkq - 0 5,AlphaBeta,2,2,0.10866,306,472,-19,Bc4,Bc4,2816.1
+pos_02,Material Advantage (White +Rook),Material advantage,r1bqkb1r/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/R1BQKB1R w KQkq - 0 5,Minimax,3,3,8.35418,21695,0,163,Bb5,Bb5,2596.9
+pos_02,Material Advantage (White +Rook),Material advantage,r1bqkb1r/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/R1BQKB1R w KQkq - 0 5,AlphaBeta,3,3,0.52941,1400,3455,163,Bb5,Bb5,2644.5
+pos_03,Material Disadvantage (White -Bishop),Material disadvantage,r1bqk2r/pppp1ppp/2n2n2/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 4,Minimax,1,1,0.00697,27,0,422,Nxe5,Nxe5,3873.7
+pos_03,Material Disadvantage (White -Bishop),Material disadvantage,r1bqk2r/pppp1ppp/2n2n2/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 4,AlphaBeta,1,1,0.00668,27,0,422,Nxe5,Nxe5,4041.9
+pos_03,Material Disadvantage (White -Bishop),Material disadvantage,r1bqk2r/pppp1ppp/2n2n2/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 4,Minimax,2,2,0.28191,756,0,193,Nc3,Nc3,2681.7
+pos_03,Material Disadvantage (White -Bishop),Material disadvantage,r1bqk2r/pppp1ppp/2n2n2/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 4,AlphaBeta,2,2,0.07898,209,547,193,Nc3,Nc3,2646.2
+pos_03,Material Disadvantage (White -Bishop),Material disadvantage,r1bqk2r/pppp1ppp/2n2n2/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 4,Minimax,3,3,8.82028,21895,0,441,Bb5,Bb5,2482.3
+pos_03,Material Disadvantage (White -Bishop),Material disadvantage,r1bqk2r/pppp1ppp/2n2n2/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 4,AlphaBeta,3,3,0.48757,1207,2975,441,Bb5,Bb5,2475.5
+pos_04,Tactical Capture Opportunity (Knight Fork),Tactical capture opportunity,r1bqk2r/ppp2ppp/2n5/3np3/1bB5/2NP1N2/PPP2PPP/R1BQK2R w KQkq - 0 7,Minimax,1,1,0.01077,32,0,322,Bxd5,Bxd5,2971.2
+pos_04,Tactical Capture Opportunity (Knight Fork),Tactical capture opportunity,r1bqk2r/ppp2ppp/2n5/3np3/1bB5/2NP1N2/PPP2PPP/R1BQK2R w KQkq - 0 7,AlphaBeta,1,1,0.01085,32,0,322,Bxd5,Bxd5,2949.3
+pos_04,Tactical Capture Opportunity (Knight Fork),Tactical capture opportunity,r1bqk2r/ppp2ppp/2n5/3np3/1bB5/2NP1N2/PPP2PPP/R1BQK2R w KQkq - 0 7,Minimax,2,2,0.63936,1488,0,-70,Bxd5,Bxd5,2327.3
+pos_04,Tactical Capture Opportunity (Knight Fork),Tactical capture opportunity,r1bqk2r/ppp2ppp/2n5/3np3/1bB5/2NP1N2/PPP2PPP/R1BQK2R w KQkq - 0 7,AlphaBeta,2,2,0.04295,104,1384,-70,Bxd5,Bxd5,2421.4
+pos_04,Tactical Capture Opportunity (Knight Fork),Tactical capture opportunity,r1bqk2r/ppp2ppp/2n5/3np3/1bB5/2NP1N2/PPP2PPP/R1BQK2R w KQkq - 0 7,Minimax,3,3,26.25365,50969,0,96,Nxe5,Nxe5,1941.4
+pos_04,Tactical Capture Opportunity (Knight Fork),Tactical capture opportunity,r1bqk2r/ppp2ppp/2n5/3np3/1bB5/2NP1N2/PPP2PPP/R1BQK2R w KQkq - 0 7,AlphaBeta,3,3,0.27217,574,4252,96,Nxe5,Nxe5,2109.0
+pos_05,King Safety Vulnerability (Exposed Black King),King safety problem,r1bq1rk1/ppp2ppp/2np4/2b1p3/2B1P1n1/2NP1N2/PPP1QPPP/R1B2RK1 w - - 0 8,Minimax,1,1,0.01056,38,0,159,Nxe5,Nxe5,3598.5
+pos_05,King Safety Vulnerability (Exposed Black King),King safety problem,r1bq1rk1/ppp2ppp/2np4/2b1p3/2B1P1n1/2NP1N2/PPP1QPPP/R1B2RK1 w - - 0 8,AlphaBeta,1,1,0.01097,38,0,159,Nxe5,Nxe5,3464.0
+pos_05,King Safety Vulnerability (Exposed Black King),King safety problem,r1bq1rk1/ppp2ppp/2np4/2b1p3/2B1P1n1/2NP1N2/PPP1QPPP/R1B2RK1 w - - 0 8,Minimax,2,2,0.60489,1405,0,-85,Nd5,Nd5,2322.7
+pos_05,King Safety Vulnerability (Exposed Black King),King safety problem,r1bq1rk1/ppp2ppp/2np4/2b1p3/2B1P1n1/2NP1N2/PPP1QPPP/R1B2RK1 w - - 0 8,AlphaBeta,2,2,0.07928,192,1213,-85,Nd5,Nd5,2421.8
+pos_05,King Safety Vulnerability (Exposed Black King),King safety problem,r1bq1rk1/ppp2ppp/2np4/2b1p3/2B1P1n1/2NP1N2/PPP1QPPP/R1B2RK1 w - - 0 8,Minimax,3,3,23.38482,52267,0,176,Bd5,Bd5,2235.1
+pos_05,King Safety Vulnerability (Exposed Black King),King safety problem,r1bq1rk1/ppp2ppp/2np4/2b1p3/2B1P1n1/2NP1N2/PPP1QPPP/R1B2RK1 w - - 0 8,AlphaBeta,3,3,1.42535,3241,6628,176,Bd5,Bd5,2273.8
+pos_06,Forced Checkmate Opportunity (Mate-in-2),Checkmate opportunity,r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4,Minimax,1,1,0.00973,43,0,19999,Qxf7#,Qxf7#,4419.3
+pos_06,Forced Checkmate Opportunity (Mate-in-2),Checkmate opportunity,r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4,AlphaBeta,1,1,0.00966,43,0,19999,Qxf7#,Qxf7#,4451.3
+pos_06,Forced Checkmate Opportunity (Mate-in-2),Checkmate opportunity,r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4,Minimax,2,2,0.53883,1176,0,19999,Qxf7#,Qxf7#,2182.5
+pos_06,Forced Checkmate Opportunity (Mate-in-2),Checkmate opportunity,r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4,AlphaBeta,2,2,0.0282,85,1091,19999,Qxf7#,Qxf7#,3014.2
+pos_06,Forced Checkmate Opportunity (Mate-in-2),Checkmate opportunity,r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4,Minimax,3,3,19.13106,46871,0,19999,Qxf7#,Qxf7#,2450.0
+pos_06,Forced Checkmate Opportunity (Mate-in-2),Checkmate opportunity,r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4,AlphaBeta,3,3,0.58034,1420,1091,19999,Qxf7#,Qxf7#,2446.8
+pos_07,Defensive Resiliency (Countering Bishop Pin),Defensive position,r1bqk2r/pppp1ppp/2n2n2/4p3/1bB1P3/2P2N2/PP1P1PPP/RNBQK2R b KQkq - 0 4,Minimax,1,1,0.00991,33,0,-208,Nxe4,Nxe4,3330.0
+pos_07,Defensive Resiliency (Countering Bishop Pin),Defensive position,r1bqk2r/pppp1ppp/2n2n2/4p3/1bB1P3/2P2N2/PP1P1PPP/RNBQK2R b KQkq - 0 4,AlphaBeta,1,1,0.00972,33,0,-208,Nxe4,Nxe4,3395.1
+pos_07,Defensive Resiliency (Countering Bishop Pin),Defensive position,r1bqk2r/pppp1ppp/2n2n2/4p3/1bB1P3/2P2N2/PP1P1PPP/RNBQK2R b KQkq - 0 4,Minimax,2,2,0.52932,1150,0,69,Bc5,Bc5,2172.6
+pos_07,Defensive Resiliency (Countering Bishop Pin),Defensive position,r1bqk2r/pppp1ppp/2n2n2/4p3/1bB1P3/2P2N2/PP1P1PPP/RNBQK2R b KQkq - 0 4,AlphaBeta,2,2,0.1046,232,918,69,Bc5,Bc5,2218.0
+pos_07,Defensive Resiliency (Countering Bishop Pin),Defensive position,r1bqk2r/pppp1ppp/2n2n2/4p3/1bB1P3/2P2N2/PP1P1PPP/RNBQK2R b KQkq - 0 4,Minimax,3,3,17.4539,37533,0,-174,Bc5,Bc5,2150.4
+pos_07,Defensive Resiliency (Countering Bishop Pin),Defensive position,r1bqk2r/pppp1ppp/2n2n2/4p3/1bB1P3/2P2N2/PP1P1PPP/RNBQK2R b KQkq - 0 4,AlphaBeta,3,3,0.69906,1589,6862,-174,Bc5,Bc5,2273.1
+pos_08,Tactical Poisoned Pawn (Greedy Failure Trap),Tactical position where greedy evaluation may fail,r1bqk2r/pp2bppp/2n1pn2/2pp4/3P4/2PBPN2/PP1N1PPP/R1BQK2R w KQkq - 1 7,Minimax,1,1,0.01275,41,0,77,Bxh7,Bxh7,3215.7
+pos_08,Tactical Poisoned Pawn (Greedy Failure Trap),Tactical position where greedy evaluation may fail,r1bqk2r/pp2bppp/2n1pn2/2pp4/3P4/2PBPN2/PP1N1PPP/R1BQK2R w KQkq - 1 7,AlphaBeta,1,1,0.01287,41,0,77,Bxh7,Bxh7,3185.7
+pos_08,Tactical Poisoned Pawn (Greedy Failure Trap),Tactical position where greedy evaluation may fail,r1bqk2r/pp2bppp/2n1pn2/2pp4/3P4/2PBPN2/PP1N1PPP/R1BQK2R w KQkq - 1 7,Minimax,2,2,0.70654,1465,0,-44,dxc5,dxc5,2073.5
+pos_08,Tactical Poisoned Pawn (Greedy Failure Trap),Tactical position where greedy evaluation may fail,r1bqk2r/pp2bppp/2n1pn2/2pp4/3P4/2PBPN2/PP1N1PPP/R1BQK2R w KQkq - 1 7,AlphaBeta,2,2,0.05169,116,1349,-44,dxc5,dxc5,2244.1
+pos_08,Tactical Poisoned Pawn (Greedy Failure Trap),Tactical position where greedy evaluation may fail,r1bqk2r/pp2bppp/2n1pn2/2pp4/3P4/2PBPN2/PP1N1PPP/R1BQK2R w KQkq - 1 7,Minimax,3,3,28.33351,57485,0,168,Bb5,Bb5,2028.9
+pos_08,Tactical Poisoned Pawn (Greedy Failure Trap),Tactical position where greedy evaluation may fail,r1bqk2r/pp2bppp/2n1pn2/2pp4/3P4/2PBPN2/PP1N1PPP/R1BQK2R w KQkq - 1 7,AlphaBeta,3,3,0.9862,2010,6100,168,Bb5,Bb5,2038.1
+pos_09,Endgame Pawn Breakthrough,Endgame position,8/5p2/4p1p1/3pP1Pp/k2P1P1P/8/2K5/8 w - - 0 45,Minimax,1,1,0.00114,8,0,99,Kd3,Kd3,7017.5
+pos_09,Endgame Pawn Breakthrough,Endgame position,8/5p2/4p1p1/3pP1Pp/k2P1P1P/8/2K5/8 w - - 0 45,AlphaBeta,1,1,0.0011,8,0,99,Kd3,Kd3,7272.7
+pos_09,Endgame Pawn Breakthrough,Endgame position,8/5p2/4p1p1/3pP1Pp/k2P1P1P/8/2K5/8 w - - 0 45,Minimax,2,2,0.01076,60,0,78,Kd3,Kd3,5576.2
+pos_09,Endgame Pawn Breakthrough,Endgame position,8/5p2/4p1p1/3pP1Pp/k2P1P1P/8/2K5/8 w - - 0 45,AlphaBeta,2,2,0.00367,22,38,78,Kd3,Kd3,5994.6
+pos_09,Endgame Pawn Breakthrough,Endgame position,8/5p2/4p1p1/3pP1Pp/k2P1P1P/8/2K5/8 w - - 0 45,Minimax,3,3,0.07877,428,0,86,Kd3,Kd3,5433.5
+pos_09,Endgame Pawn Breakthrough,Endgame position,8/5p2/4p1p1/3pP1Pp/k2P1P1P/8/2K5/8 w - - 0 45,AlphaBeta,3,3,0.0176,91,61,86,Kd3,Kd3,5170.5
+pos_10,Complex Middlegame (Sicilian Defense),Complex middlegame,r1bqkb1r/pp2pppp/2np1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 2 6,Minimax,1,1,0.01326,43,0,390,Nxc6,Nxc6,3242.8
+pos_10,Complex Middlegame (Sicilian Defense),Complex middlegame,r1bqkb1r/pp2pppp/2np1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 2 6,AlphaBeta,1,1,0.01174,43,0,390,Nxc6,Nxc6,3662.7
+pos_10,Complex Middlegame (Sicilian Defense),Complex middlegame,r1bqkb1r/pp2pppp/2np1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 2 6,Minimax,2,2,0.71559,1479,0,73,Nxc6,Nxc6,2066.8
+pos_10,Complex Middlegame (Sicilian Defense),Complex middlegame,r1bqkb1r/pp2pppp/2np1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 2 6,AlphaBeta,2,2,0.05044,115,1364,73,Nxc6,Nxc6,2279.9
+pos_10,Complex Middlegame (Sicilian Defense),Complex middlegame,r1bqkb1r/pp2pppp/2np1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 2 6,Minimax,3,3,28.0679,62945,0,294,Bb5,Bb5,2242.6
+pos_10,Complex Middlegame (Sicilian Defense),Complex middlegame,r1bqkb1r/pp2pppp/2np1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 2 6,AlphaBeta,3,3,0.85438,1930,3859,294,Bb5,Bb5,2258.9
+pos_01,Balanced Opening Position (Italian Game),Balanced opening position,r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/2NP1N2/PPP2PPP/R1BQK2R b KQkq - 0 5,Greedy,1,1,0.0098,36,0,-132,Nxe4,Nxe4,3673.5
+pos_02,Material Advantage (White +Rook),Material advantage,r1bqkb1r/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/R1BQKB1R w KQkq - 0 5,Greedy,1,1,0.0098,26,0,142,Nxe5,Nxe5,2653.1
+pos_03,Material Disadvantage (White -Bishop),Material disadvantage,r1bqk2r/pppp1ppp/2n2n2/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 4,Greedy,1,1,0.0098,27,0,422,Nxe5,Nxe5,2755.1
+pos_04,Tactical Capture Opportunity (Knight Fork),Tactical capture opportunity,r1bqk2r/ppp2ppp/2n5/3np3/1bB5/2NP1N2/PPP2PPP/R1BQK2R w KQkq - 0 7,Greedy,1,1,0.0098,32,0,322,Bxd5,Bxd5,3265.3
+pos_05,King Safety Vulnerability (Exposed Black King),King safety problem,r1bq1rk1/ppp2ppp/2np4/2b1p3/2B1P1n1/2NP1N2/PPP1QPPP/R1B2RK1 w - - 0 8,Greedy,1,1,0.0098,38,0,159,Nxe5,Nxe5,3877.6
+pos_06,Forced Checkmate Opportunity (Mate-in-2),Checkmate opportunity,r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4,Greedy,1,1,0.0098,43,0,19999,Qxf7#,Qxf7#,4387.8
+pos_07,Defensive Resiliency (Countering Bishop Pin),Defensive position,r1bqk2r/pppp1ppp/2n2n2/4p3/1bB1P3/2P2N2/PP1P1PPP/RNBQK2R b KQkq - 0 4,Greedy,1,1,0.0098,33,0,-208,Nxe4,Nxe4,3367.3
+pos_08,Tactical Poisoned Pawn (Greedy Failure Trap),Tactical position where greedy evaluation may fail,r1bqk2r/pp2bppp/2n1pn2/2pp4/3P4/2PBPN2/PP1N1PPP/R1BQK2R w KQkq - 1 7,Greedy,1,1,0.0098,41,0,77,Bxh7,Bxh7,4183.7
+pos_09,Endgame Pawn Breakthrough,Endgame position,8/5p2/4p1p1/3pP1Pp/k2P1P1P/8/2K5/8 w - - 0 45,Greedy,1,1,0.0098,8,0,99,Kd3,Kd3,816.3
+pos_10,Complex Middlegame (Sicilian Defense),Complex middlegame,r1bqkb1r/pp2pppp/2np1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 2 6,Greedy,1,1,0.0098,43,0,390,Nxc6,Nxc6,4387.8
+pos_01,Balanced Opening Position (Italian Game),Balanced opening position,r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/2NP1N2/PPP2PPP/R1BQK2R b KQkq - 0 5,IterativeDeepening,4,4,11.5513,23094,0,63,Bb4,Bb4,1999.3
+pos_02,Material Advantage (White +Rook),Material advantage,r1bqkb1r/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/R1BQKB1R w KQkq - 0 5,IterativeDeepening,4,4,4.6513,10222,0,-26,Bb5,Bb5,2197.7
+pos_03,Material Disadvantage (White -Bishop),Material disadvantage,r1bqk2r/pppp1ppp/2n2n2/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 4,IterativeDeepening,4,4,4.3437,9762,0,193,Nc3,Nc3,2247.4
+pos_04,Tactical Capture Opportunity (Knight Fork),Tactical capture opportunity,r1bqk2r/ppp2ppp/2n5/3np3/1bB5/2NP1N2/PPP2PPP/R1BQK2R w KQkq - 0 7,IterativeDeepening,4,4,12.4465,24432,0,-173,a3,a3,1963.0
+pos_05,King Safety Vulnerability (Exposed Black King),King safety problem,r1bq1rk1/ppp2ppp/2np4/2b1p3/2B1P1n1/2NP1N2/PPP1QPPP/R1B2RK1 w - - 0 8,IterativeDeepening,4,4,4.7882,10412,0,-162,Bd5,Bd5,2174.5
+pos_06,Forced Checkmate Opportunity (Mate-in-2),Checkmate opportunity,r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4,IterativeDeepening,1,1,0.0113,43,0,19999,Qxf7#,Qxf7#,3805.3
+pos_07,Defensive Resiliency (Countering Bishop Pin),Defensive position,r1bqk2r/pppp1ppp/2n2n2/4p3/1bB1P3/2P2N2/PP1P1PPP/RNBQK2R b KQkq - 0 4,IterativeDeepening,4,4,5.1773,11292,0,78,Bc5,Bc5,2181.1
+pos_08,Tactical Poisoned Pawn (Greedy Failure Trap),Tactical position where greedy evaluation may fail,r1bqk2r/pp2bppp/2n1pn2/2pp4/3P4/2PBPN2/PP1N1PPP/R1BQK2R w KQkq - 1 7,IterativeDeepening,4,4,5.361,9460,0,-57,Bb5,Bb5,1764.6
+pos_09,Endgame Pawn Breakthrough,Endgame position,8/5p2/4p1p1/3pP1Pp/k2P1P1P/8/2K5/8 w - - 0 45,IterativeDeepening,6,6,0.957,5076,0,40,Kd3,Kd3,5304.1
+pos_10,Complex Middlegame (Sicilian Defense),Complex middlegame,r1bqkb1r/pp2pppp/2np1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 2 6,IterativeDeepening,4,4,3.2062,7624,0,41,Bb5,Bb5,2377.9
