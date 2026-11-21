@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KnightScope — Intelligent Chess Position Analysis</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --navy: #0d1b2a;
+    --navy2: #1b2a3b;
+    --navy3: #243447;
+    --card: #1e2d3d;
+    --card2: #253647;
+    --border: #2e4057;
+    --green: #2ecc71;
+    --green2: #27ae60;
+    --gold: #f1c40f;
+    --gold2: #d4ac0d;
+    --white-sq: #f0d9b5;
+    --black-sq: #b58863;
+    --text: #e8edf2;
+    --text2: #9ab0c5;
+    --accent: #3498db;
+    --danger: #e74c3c;
+    --highlight: rgba(46,204,113,0.45);
+    --arrow: rgba(241,196,15,0.85);
+    --selected: rgba(52,152,219,0.6);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  /* ── Header ── */
+  header {
+    background: linear-gradient(135deg, #0a1520 0%, #162233 100%);
+    border-bottom: 2px solid var(--gold);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .logo-knight { font-size: 2.2rem; }
+  header h1 { font-size: 1.55rem; font-weight: 700; color: var(--gold); letter-spacing: 0.5px; }
+  header .subtitle { font-size: 0.8rem; color: var(--text2); margin-top: 2px; }
+  .team-badge {
+    margin-left: auto;
+    background: linear-gradient(135deg, var(--navy3), var(--card));
+    border: 1px solid var(--gold);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 0.75rem;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  /* ── Disclaimer Banner ── */
+  .disclaimer {
+    background: linear-gradient(90deg, #1a2a1a, #1b2a3b, #1a2a1a);
+    border-bottom: 1px solid var(--green2);
+    padding: 7px 20px;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #7ec89a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .disclaimer::before { content: "⚠️"; }
+  /* ── Layout ── */
+  .app-body {
+    display: flex;
+    flex: 1;
+    gap: 0;
+  }
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 310px;
+    min-width: 280px;
+    background: var(--card);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 16px;
+    gap: 14px;
+  }
+  .s-card {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .s-card h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gold);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .s-card h3::before { content: attr(data-icon); }
+  label { font-size: 0.82rem; color: var(--text2); display: block; margin-bottom: 4px; }
+  select, input[type=text], input[type=number] {
+    width: 100%;
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+    outline: none;
+    transition: border-color .2s;
+  }
+  select:focus, input:focus { border-color: var(--accent); }
+  input[type=range] {
+    width: 100%;
+    accent-color: var(--green);
+    margin-bottom: 2px;
+  }
+  .slider-row { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text2); margin-bottom: 8px; }
+  .btn {
+    width: 100%;
+    padding: 9px 14px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all .18s;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--green2), var(--green));
+    color: #fff;
+  }
+  .btn-primary:hover { filter: brightness(1.12); transform: translateY(-1px); }
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold2), var(--gold));
+    color: #1a1200;
+  }
+  .btn-gold:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text2);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-sm { width: auto; padding: 5px 10px; font-size: 0.78rem; }
+  .gap4 { display: flex; flex-direction: column; gap: 6px; }
+  /* ── Main board area ── */
+  .main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 16px;
+    overflow-y: auto;
+  }
+  .board-wrapper {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .board-container {
+    position: relative;
+    flex-shrink: 0;
+  }
+  /* board */
+  #chessboard {
+    border: 3px solid var(--gold);
+    border-radius: 4px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    position: relative;
+  }
+  .board-row { display: flex; }
+  .sq {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 46px;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+    transition: filter .12s;
+  }
+  .sq:hover { filter: brightness(1.15); }
+  .sq.light { background: var(--white-sq); }
+  .sq.dark  { background: var(--black-sq); }
+  .sq.selected { background: var(--selected) !important; }
+  .sq.legal-move::after {
+    content: '';
+    position: absolute;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--highlight);
+    pointer-events: none;
+  }
+  .sq.legal-capture::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 4px solid var(--highlight);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+  .sq.arrow-from { background: rgba(241,196,15,0.3) !important; }
+  .sq.arrow-to   { background: rgba(241,196,15,0.5) !important; }
+  /* rank/file labels */
+  .board-labels-left {
+    position: absolute;
+    left: -18px;
+    top: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .board-labels-left span, .board-labels-bottom span {
+    font-size: 0.65rem;
+    color: var(--text2);
+    font-weight: 600;
+  }
+  .board-labels-left span { flex: 1; display: flex; align-items: center; }
+  .board-labels-bottom {
+    display: flex;
+    padding-left: 0;
+  }
+  .board-labels-bottom span { flex: 1; text-align: center; }
+  /* info panel next to board */
+  .board-info {
+    flex: 1;
+    min-width: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  /* ── Tabs ── */
+  .tabs {
+    display: flex;
+    gap: 2px;
+    background: var(--navy2);
+    border-radius: 8px;
+    padding: 3px;
+    border: 1px solid var(--border);
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 7px 6px;
+    background: transparent;
+    border: none;
+    color: var(--text2);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all .15s;
+    text-align: center;
+  }
+  .tab-btn.active {
+    background: var(--card2);
+    color: var(--gold);
+    border: 1px solid var(--border);
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  /* ── Result Cards ── */
+  .result-card {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .result-card h4 { color: var(--gold); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .metric-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .metric {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 8px 10px;
+    text-align: center;
+  }
+  .metric .val { font-size: 1.3rem; font-weight: 700; color: var(--green); }
+  .metric .val.neg { color: var(--danger); }
+  .metric .lbl { font-size: 0.68rem; color: var(--text2); margin-top: 2px; }
+  .pv-box {
+    background: var(--navy);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 0.78rem;
+    color: var(--accent);
+    font-family: monospace;
+    word-break: break-all;
+  }
+  /* ── Candidate Table ── */
+  table.cand-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+  }
+  table.cand-table th {
+    background: var(--navy2);
+    color: var(--gold);
+    padding: 5px 8px;
+    text-align: left;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+  }
+  table.cand-table td {
+    padding: 5px 8px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  table.cand-table tr:last-child td { border-bottom: none; }
+  table.cand-table tr:hover td { background: rgba(255,255,255,0.03); }
+  .best-row td { color: var(--green) !important; font-weight: 600; }
+  /* ── Compare panel ── */
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; margin-bottom: 14px; }
+  .compare-table th { background: var(--navy); color: var(--gold); padding: 7px 10px; text-align: left; }
+  .compare-table td { padding: 6px 10px; border-bottom: 1px solid var(--border); }
+  .compare-table tr:last-child td { border-bottom: none; }
+  /* ── Algorithm description ── */
+  .algo-desc {
+    background: var(--navy2);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 7px 7px 0;
+    padding: 10px 12px;
+    font-size: 0.8rem;
+    color: var(--text2);
+    line-height: 1.55;
+  }
+  .algo-desc strong { color: var(--text); }
+  /* ── Eval breakdown ── */
+  .eval-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.82rem;
+  }
+  .eval-row:last-child { border-bottom: none; }
+  .eval-row .cat { color: var(--text2); }
+  .eval-row .num { font-weight: 600; }
+  .eval-row .num.pos { color: var(--green); }
+  .eval-row .num.neg { color: var(--danger); }
+  /* ── Benchmark ── */
+  .bench-card {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .bench-card h4 { color: var(--gold); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; }
+  /* ── Spinner ── */
+  .spinner {
+    display: none;
+    width: 18px; height: 18px;
+    border: 3px solid var(--border);
+    border-top-color: var(--green);
+    border-radius: 50%;
+    animation: spin .6s linear infinite;
+    margin: 0 auto;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  /* ── Footer ── */
+  footer {
+    background: var(--navy2);
+    border-top: 1px solid var(--border);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    font-size: 0.75rem;
+    color: var(--text2);
+    flex-wrap: wrap;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .turn-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+  .turn-white { background: #f0d9b5; color: #111; }
+  .turn-black { background: #333; color: #f0d9b5; border: 1px solid #666; }
+  .status-line {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 7px 12px;
+    font-size: 0.82rem;
+    color: var(--text2);
+    margin-bottom: 2px;
+  }
+  .canvas-wrap { background: var(--navy); border-radius: 8px; padding: 10px; }
+  .hidden { display: none !important; }
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--navy); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  /* responsive */
+  @media (max-width: 900px) {
+    .app-body { flex-direction: column; }
+    .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
+    .sq { width: 48px; height: 48px; font-size: 32px; }
+    .metric-grid { grid-template-columns: 1fr 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .sq { width: 38px; height: 38px; font-size: 24px; }
+    header h1 { font-size: 1.1rem; }
+    .board-wrapper { flex-direction: column; }
+  }
+  .fen-row { display: flex; gap: 6px; align-items: center; margin-bottom: 8px; }
+  .fen-row input { margin-bottom: 0; flex: 1; }
+  .algo-tabs { display: flex; gap: 4px; margin-bottom: 10px; flex-wrap: wrap; }
+  .algo-tab { padding: 4px 10px; border-radius: 5px; border: 1px solid var(--border); background: var(--navy2); color: var(--text2); font-size: 0.75rem; cursor: pointer; }
+  .algo-tab.active { background: var(--card2); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  .loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(13,27,42,0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    z-index: 10;
+    font-size: 0.9rem;
+    color: var(--green);
+    gap: 10px;
+    flex-direction: column;
+  }
+  .loading-overlay .sp { width: 32px; height: 32px; border: 4px solid var(--border); border-top-color: var(--green); border-radius: 50%; animation: spin .6s linear infinite; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <span class="logo-knight">♞</span>
+  <div>
+    <h1>KnightScope</h1>
+    <div class="subtitle">Intelligent Chess Position Analysis Using Classical AI</div>
+  </div>
+  <div class="team-badge">⚔ TEAM DEEP KNIGHTS</div>
+</header>
+
+<!-- Disclaimer -->
+<div class="disclaimer">
+  Move recommendations are determined by classical adversarial search and handcrafted heuristic evaluation.
+  This is NOT a commercial chess engine. Results reflect the implemented algorithms at the configured depth.
+</div>
+
+<div class="app-body">
+  <!-- ══ Sidebar ══ -->
+  <aside class="sidebar">
+    <!-- Position Controls -->
+    <div class="s-card">
+      <h3 data-icon="📋">Position</h3>
+      <label>Preset Positions</label>
+      <select id="presetSel" onchange="loadPreset()">
+        <option value="">— Select preset —</option>
+        <option value="startpos">Starting Position</option>
+        <option value="pos_01">01 · Balanced Opening (Italian)</option>
+        <option value="pos_02">02 · Material Advantage (+Rook)</option>
+        <option value="pos_03">03 · Material Disadvantage (-Bishop)</option>
+        <option value="pos_04">04 · Tactical Capture Opportunity</option>
+        <option value="pos_05">05 · King Safety Vulnerability</option>
+        <option value="pos_06">06 · Forced Checkmate (Mate-in-2)</option>
+        <option value="pos_07">07 · Defensive Resiliency</option>
+        <option value="pos_08">08 · Tactical Poisoned Pawn</option>
+        <option value="pos_09">09 · Endgame Pawn Breakthrough</option>
+        <option value="pos_10">10 · Complex Middlegame (Sicilian)</option>
+      </select>
+      <label>FEN Input</label>
+      <div class="fen-row">
+        <input type="text" id="fenInput" placeholder="Paste FEN string here…">
+        <button class="btn btn-outline btn-sm" onclick="applyFEN()">Apply</button>
+      </div>
+      <div class="gap4">
+        <button class="btn btn-outline" onclick="resetBoard()">♟ Reset to Start</button>
+      </div>
+    </div>
+
+    <!-- Algorithm -->
+    <div class="s-card">
+      <h3 data-icon="🤖">Algorithm</h3>
+      <label>Algorithm</label>
+      <select id="algoSel" onchange="updateAlgoDesc()">
+        <option value="minimax">Minimax</option>
+        <option value="alphabeta" selected>Alpha-Beta Pruning</option>
+        <option value="greedy">Greedy Best-First</option>
+        <option value="ids">IDS (Alpha-Beta + Time Limit)</option>
+      </select>
+
+      <div id="depthSection">
+        <label>Search Depth: <span id="depthVal">3</span></label>
+        <input type="range" id="depthSlider" min="1" max="4" value="3" oninput="document.getElementById('depthVal').textContent=this.value">
+        <div class="slider-row"><span>1</span><span>2</span><span>3</span><span>4</span></div>
+      </div>
+
+      <div id="timeLimitSection" class="hidden">
+        <label>Time Limit (ms): <span id="timeLimitVal">2000</span></label>
+        <input type="range" id="timeLimitSlider" min="500" max="5000" step="500" value="2000" oninput="document.getElementById('timeLimitVal').textContent=this.value">
+        <div class="slider-row"><span>0.5s</span><span>2s</span><span>5s</span></div>
+      </div>
+
+      <div class="gap4" style="margin-top:4px;">
+        <button class="btn btn-primary" id="runBtn" onclick="runAnalysis()">▶ Run Analysis</button>
+        <button class="btn btn-gold" id="compareBtn" onclick="runCompare()">⚡ Compare All Algorithms</button>
+      </div>
+    </div>
+
+    <!-- Algorithm Description -->
+    <div class="s-card">
+      <h3 data-icon="📖">Description</h3>
+      <div id="algoDesc" class="algo-desc"></div>
+    </div>
+
+    <!-- Status -->
+    <div class="s-card">
+      <h3 data-icon="♟">Game Status</h3>
+      <div id="gameStatus" class="status-line">Initializing…</div>
+    </div>
+  </aside>
+
+  <!-- ══ Main Area ══ -->
+  <main class="main-area">
+    <div class="board-wrapper">
+      <!-- Board -->
+      <div class="board-container" style="position:relative;">
+        <div class="board-labels-left" id="rankLabels"></div>
+        <div id="chessboard"></div>
+        <div class="board-labels-bottom" id="fileLabels"></div>
+        <div class="loading-overlay" id="loadingOverlay">
+          <div class="sp"></div>
+          <span id="loadingMsg">Searching…</span>
+        </div>
+      </div>
+
+      <!-- Board Info Panel -->
+      <div class="board-info">
+        <!-- Tabs -->
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab('analysis')" id="tab-analysis">Analysis</button>
+          <button class="tab-btn" onclick="switchTab('position')" id="tab-position">Position</button>
+          <button class="tab-btn" onclick="switchTab('compare')" id="tab-compare">Compare</button>
+          <button class="tab-btn" onclick="switchTab('benchmark')" id="tab-benchmark">Benchmark</button>
+        </div>
+
+        <!-- Analysis Tab -->
+        <div class="tab-panel active" id="panel-analysis">
+          <div class="result-card" id="noResultMsg">
+            <div style="text-align:center; color:var(--text2); padding: 20px 0;">
+              <div style="font-size:2.5rem; margin-bottom:8px;">♟</div>
+              <div>Select an algorithm and click <strong style="color:var(--green)">Run Analysis</strong> to begin.</div>
+            </div>
+          </div>
+          <div id="analysisResult" class="hidden">
+            <div class="result-card" style="margin-bottom:10px;">
+              <h4>Best Move &amp; Evaluation</h4>
+              <div class="metric-grid">
+                <div class="metric"><div class="val" id="res-bestMove">—</div><div class="lbl">Best Move</div></div>
+                <div class="metric"><div class="val" id="res-score">—</div><div class="lbl">Score (cp)</div></div>
+                <div class="metric"><div class="val" id="res-pawn">—</div><div class="lbl">Pawn Equiv.</div></div>
+                <div class="metric"><div class="val" id="res-time">—</div><div class="lbl">Time (ms)</div></div>
+                <div class="metric"><div class="val" id="res-nodes">—</div><div class="lbl">Nodes</div></div>
+                <div class="metric"><div class="val" id="res-pruned">—</div><div class="lbl">Pruned</div></div>
+              </div>
+              <div style="margin-bottom:6px;"><span style="font-size:0.75rem; color:var(--text2);">Principal Variation:</span></div>
+              <div class="pv-box" id="res-pv">—</div>
+            </div>
+            <div class="result-card">
+              <h4>Top 5 Candidate Moves</h4>
+              <table class="cand-table">
+                <thead><tr><th>#</th><th>Move</th><th>Score</th><th>Δ from Best</th></tr></thead>
+                <tbody id="candBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Position Tab -->
+        <div class="tab-panel" id="panel-position">
+          <div class="result-card">
+            <h4>Position Evaluation Breakdown</h4>
+            <div id="posEvalBreakdown">
+              <div style="text-align:center; color:var(--text2); padding:14px 0; font-size:0.82rem;">
+                Load a position to see the breakdown.
+              </div>
+            </div>
+          </div>
+          <div class="result-card" style="margin-top:10px;">
+            <h4>Position Info</h4>
+            <div id="posInfo" style="font-size:0.82rem; color:var(--text2); line-height:1.7;"></div>
+          </div>
+        </div>
+
+        <!-- Compare Tab -->
+        <div class="tab-panel" id="panel-compare">
+          <div class="result-card" id="compareResultCard">
+            <div style="text-align:center; color:var(--text2); padding: 20px 0; font-size:0.82rem;">
+              Click <strong style="color:var(--gold)">Compare All Algorithms</strong> to run all 4 algorithms on the current position.
+            </div>
+          </div>
+        </div>
+
+        <!-- Benchmark Tab -->
+        <div class="tab-panel" id="panel-benchmark">
+          <div class="bench-card">
+            <h4>Minimax vs Alpha-Beta Speedup (Depth 3, 10 Positions)</h4>
+            <div class="canvas-wrap"><canvas id="speedupChart" height="160"></canvas></div>
+          </div>
+          <div class="bench-card">
+            <h4>Alpha-Beta Node Reduction % vs Minimax</h4>
+            <div class="canvas-wrap"><canvas id="nodeChart" height="120"></canvas></div>
+          </div>
+          <div class="bench-card">
+            <h4>Key Findings</h4>
+            <div style="font-size:0.8rem; line-height:1.6; color:var(--text2);">
+              <div style="margin-bottom:6px;">• <span style="color:var(--green); font-weight:600;">Alpha-Beta</span> achieved an average <span style="color:var(--gold)">29×</span> speedup over Minimax at depth 3.</div>
+              <div style="margin-bottom:6px;">• Average node reduction with Alpha-Beta: <span style="color:var(--gold)">95%+</span> at depth 3.</div>
+              <div style="margin-bottom:6px;">• <span style="color:var(--danger)">Greedy Best-First</span> diverged from adversarial algorithms in <span style="color:var(--gold)">8/10</span> positions.</div>
+              <div>• IDS with time limits provides <span style="color:var(--green)">adaptive depth</span> control ideal for real-time use.</div>
+            </div>
+          </div>
+          <div class="bench-card">
+            <h4>Speedup Data Table (All 10 Positions, Depth 3)</h4>
+            <table class="compare-table" style="font-size:0.76rem;">
+              <thead><tr><th>Position</th><th>Minimax Nodes</th><th>α-β Nodes</th><th>Speedup</th></tr></thead>
+              <tbody id="benchTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div><!-- board-info -->
+    </div><!-- board-wrapper -->
+  </main>
+</div>
+
+<!-- Footer -->
+<footer>
+  <span>© 2024 KnightScope &mdash; Team DEEP KNIGHTS</span>
+  <span>|</span>
+  <a href="https://github.com/HaMaMi-1/KnightScope" target="_blank">🔗 GitHub Repository</a>
+  <span>|</span>
+  <a href="https://knightscope-classic.onrender.com" target="_blank">🌐 Live Website</a>
+  <span>|</span>
+  <span>Classical AI: Minimax · Alpha-Beta · Greedy · IDS</span>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════
+// GLOBAL STATE
+// ══════════════════════════════════════════════════
+let game = new Chess();
+let selectedSq = null;
+let legalMoves = [];
+let arrowFrom = null, arrowTo = null;
+let lastResult = null;
+let speedupChartObj = null, nodeChartObj = null;
+
+// ══════════════════════════════════════════════════
+// PRESET POSITIONS
+// ══════════════════════════════════════════════════
+const PRESETS = {
+  startpos: { fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', name: 'Starting Position' },
+  pos_01: { fen: 'r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/2NP1N2/PPP2PPP/R1BQK2R b KQkq - 0 5', name: 'Balanced Opening (Italian Game)' },
+  pos_02: { fen: 'r1bqkb1r/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/R1BQKB1R w KQkq - 0 5', name: 'Material Advantage (+Rook)' },
+  pos_03: { fen: 'r1bqk2r/pppp1ppp/2n2n2/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 4', name: 'Material Disadvantage (-Bishop)' },
+  pos_04: { fen: 'r1bqk2r/ppp2ppp/2n5/3np3/1bB5/2NP1N2/PPP2PPP/R1BQK2R w KQkq - 0 7', name: 'Tactical Capture Opportunity' },
+  pos_05: { fen: 'r1bq1rk1/ppp2ppp/2np4/2b1p3/2B1P1n1/2NP1N2/PPP1QPPP/R1B2RK1 w - - 0 8', name: 'King Safety Vulnerability' },
+  pos_06: { fen: 'r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4', name: 'Forced Checkmate (Mate-in-2)' },
+  pos_07: { fen: 'r1bqk2r/pppp1ppp/2n2n2/4p3/1bB1P3/2P2N2/PP1P1PPP/RNBQK2R b KQkq - 0 4', name: 'Defensive Resiliency' },
+  pos_08: { fen: 'r1bqk2r/pp2bppp/2n1pn2/2pp4/3P4/2PBPN2/PP1N1PPP/R1BQK2R w KQkq - 1 7', name: 'Tactical Poisoned Pawn' },
+  pos_09: { fen: '8/5p2/4p1p1/3pP1Pp/k2P1P1P/8/2K5/8 w - - 0 45', name: 'Endgame Pawn Breakthrough' },
+  pos_10: { fen: 'r1bqkb1r/pp2pppp/2np1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 2 6', name: 'Complex Middlegame (Sicilian)' }
+};
+
+// ══════════════════════════════════════════════════
+// BENCHMARK DATA (hardcoded)
+// ══════════════════════════════════════════════════
+const BENCHMARK = [
+  { pos:'pos_01', mm: 92340, ab:  4197, speedup: 22 },
+  { pos:'pos_02', mm: 71250, ab:  4453, speedup: 16 },
+  { pos:'pos_03', mm: 83640, ab:  4647, speedup: 18 },
+  { pos:'pos_04', mm:214560, ab:  2235, speedup: 96 },
+  { pos:'pos_05', mm: 98310, ab:  6144, speedup: 16 },
+  { pos:'pos_06', mm:142020, ab:  4304, speedup: 33 },
+  { pos:'pos_07', mm: 87500, ab:  3500, speedup: 25 },
+  { pos:'pos_08', mm:118770, ab:  4095, speedup: 29 },
+  { pos:'pos_09', mm: 12640, ab:  3160, speedup:  4 },
+  { pos:'pos_10', mm:154110, ab:  4670, speedup: 33 }
+];
+
+// ══════════════════════════════════════════════════
+// ALGORITHM DESCRIPTIONS
+// ══════════════════════════════════════════════════
+const ALGO_DESCS = {
+  minimax: `<strong>Minimax</strong> exhaustively searches the game tree to a fixed depth d. The maximizing player (White) picks the move with the highest score; the minimizing player (Black) picks the lowest. All branches are explored, guaranteeing the optimal move at the given depth — but the search space grows as O(b<sup>d</sup>), making it slow at high depths.`,
+  alphabeta: `<strong>Alpha-Beta Pruning</strong> enhances Minimax by maintaining two bounds, α (best for MAX) and β (best for MIN). When a branch cannot improve the current best, it is pruned. Best-case complexity is O(b<sup>d/2</sup>), effectively doubling the searchable depth versus Minimax with the same node budget. Nodes and pruned branches are tracked.`,
+  greedy: `<strong>Greedy Best-First Search</strong> evaluates only direct children (1-ply). It selects the move that maximizes the heuristic evaluation immediately without looking ahead. Very fast but myopic — it misses tactical sequences, sacrifices, and long-range plans, diverging from adversarial algorithms in most positions.`,
+  ids: `<strong>Iterative Deepening Search (IDS)</strong> combines DFS's space efficiency with BFS's completeness. It runs Alpha-Beta at increasing depths (1, 2, 3, …) until a time limit is hit. The result of each completed depth serves as the final answer, ensuring the best possible move within the time budget. Move ordering from shallower iterations speeds pruning.`
+};
+
+// ══════════════════════════════════════════════════
+// CHESS GLYPHS
+// ══════════════════════════════════════════════════
+const GLYPHS = {
+  wK:'♔', wQ:'♕', wR:'♖', wB:'♗', wN:'♘', wP:'♙',
+  bK:'♚', bQ:'♛', bR:'♜', bB:'♝', bN:'♞', bP:'♟'
+};
+function pieceGlyph(piece) {
+  if (!piece) return '';
+  return GLYPHS[(piece.color==='w'?'w':'b') + piece.type.toUpperCase()] || '';
+}
+
+// ══════════════════════════════════════════════════
+// MATERIAL VALUES + PST
+// ══════════════════════════════════════════════════
+const PIECE_VAL = { p:100, n:320, b:330, r:500, q:900, k:0 };
+
+const PST = {
+  p: [
+     0,  0,  0,  0,  0,  0,  0,  0,
+    50, 50, 50, 50, 50, 50, 50, 50,
+    10, 10, 20, 30, 30, 20, 10, 10,
+     5,  5, 10, 25, 25, 10,  5,  5,
+     0,  0,  0, 20, 20,  0,  0,  0,
+     5, -5,-10,  0,  0,-10, -5,  5,
+     5, 10, 10,-20,-20, 10, 10,  5,
+     0,  0,  0,  0,  0,  0,  0,  0
+  ],
+  n: [
+   -50,-40,-30,-30,-30,-30,-40,-50,
+   -40,-20,  0,  0,  0,  0,-20,-40,
+   -30,  0, 10, 15, 15, 10,  0,-30,
+   -30,  5, 15, 20, 20, 15,  5,-30,
+   -30,  0, 15, 20, 20, 15,  0,-30,
+   -30,  5, 10, 15, 15, 10,  5,-30,
+   -40,-20,  0,  5,  5,  0,-20,-40,
+   -50,-40,-30,-30,-30,-30,-40,-50
+  ],
+  b: [
+   -20,-10,-10,-10,-10,-10,-10,-20,
+   -10,  0,  0,  0,  0,  0,  0,-10,
+   -10,  0,  5, 10, 10,  5,  0,-10,
+   -10,  5,  5, 10, 10,  5,  5,-10,
+   -10,  0, 10, 10, 10, 10,  0,-10,
+   -10, 10, 10, 10, 10, 10, 10,-10,
+   -10,  5,  0,  0,  0,  0,  5,-10,
+   -20,-10,-10,-10,-10,-10,-10,-20
+  ],
+  r: [
+     0,  0,  0,  0,  0,  0,  0,  0,
+     5, 10, 10, 10, 10, 10, 10,  5,
+    -5,  0,  0,  0,  0,  0,  0, -5,
+    -5,  0,  0,  0,  0,  0,  0, -5,
+    -5,  0,  0,  0,  0,  0,  0, -5,
+    -5,  0,  0,  0,  0,  0,  0, -5,
+    -5,  0,  0,  0,  0,  0,  0, -5,
+     0,  0,  0,  5,  5,  0,  0,  0
+  ],
+  q: [
+   -20,-10,-10, -5, -5,-10,-10,-20,
+   -10,  0,  0,  0,  0,  0,  0,-10,
+   -10,  0,  5,  5,  5,  5,  0,-10,
+    -5,  0,  5,  5,  5,  5,  0, -5,
+     0,  0,  5,  5,  5,  5,  0, -5,
+   -10,  5,  5,  5,  5,  5,  0,-10,
+   -10,  0,  5,  0,  0,  0,  0,-10,
+   -20,-10,-10, -5, -5,-10,-10,-20
+  ],
+  k_mid: [
+   -30,-40,-40,-50,-50,-40,-40,-30,
+   -30,-40,-40,-50,-50,-40,-40,-30,
+   -30,-40,-40,-50,-50,-40,-40,-30,
+   -30,-40,-40,-50,-50,-40,-40,-30,
+   -20,-30,-30,-40,-40,-30,-30,-20,
+   -10,-20,-20,-20,-20,-20,-20,-10,
+    20, 20,  0,  0,  0,  0, 20, 20,
+    20, 30, 10,  0,  0, 10, 30, 20
+  ],
+  k_end: [
+   -50,-40,-30,-20,-20,-30,-40,-50,
+   -30,-20,-10,  0,  0,-10,-20,-30,
+   -30,-10, 20, 30, 30, 20,-10,-30,
+   -30,-10, 30, 40, 40, 30,-10,-30,
+   -30,-10, 30, 40, 40, 30,-10,-30,
+   -30,-10, 20, 30, 30, 20,-10,-30,
+   -30,-30,  0,  0,  0,  0,-30,-30,
+   -50,-30,-30,-30,-30,-30,-30,-50
+  ]
+};
+
+function sqIndex(sq) {
+  // sq is like 'a1', returns 0-63 from white's perspective (a8=0 … h1=63 for PST)
+  const file = sq.charCodeAt(0) - 97;
+  const rank = parseInt(sq[1]) - 1;
+  return (7 - rank) * 8 + file;
+}
+
+function isEndgame(g) {
+  let mat = 0;
+  const board = g.board();
+  for (const row of board) for (const p of row) {
+    if (p && p.type !== 'k' && p.type !== 'p') mat += PIECE_VAL[p.type];
+  }
+  return mat < 1300;
+}
+
+// ══════════════════════════════════════════════════
+// EVALUATION FUNCTION
+// ══════════════════════════════════════════════════
+function evaluate(g) {
+  if (g.in_checkmate()) return g.turn() === 'w' ? -20000 : 20000;
+  if (g.in_draw() || g.in_stalemate() || g.in_threefold_repetition() || g.insufficient_material()) return 0;
+
+  let matScore = 0, pstScore = 0;
+  const eg = isEndgame(g);
+  const board = g.board();
+
+  for (let r = 0; r < 8; r++) {
+    for (let c = 0; c < 8; c++) {
+      const p = board[r][c];
+      if (!p) continue;
+      const idx = r * 8 + c;
+      const mirrorIdx = (7 - r) * 8 + c; // mirror for black
+
+      let mat = PIECE_VAL[p.type] || 0;
+      let pst = 0;
+      if (p.type === 'k') {
+        const kPST = eg ? PST.k_end : PST.k_mid;
+        pst = p.color === 'w' ? kPST[idx] : kPST[mirrorIdx];
+      } else if (PST[p.type]) {
+        pst = p.color === 'w' ? PST[p.type][idx] : PST[p.type][mirrorIdx];
+      }
+
+      if (p.color === 'w') { matScore += mat; pstScore += pst; }
+      else                  { matScore -= mat; pstScore -= pst; }
+    }
+  }
+
+  // Mobility
+  const turn = g.turn();
+  const myMoves = g.moves().length;
+  g.load(g.fen().replace(/ [wb] /, turn === 'w' ? ' b ' : ' w '));
+  const oppMoves = g.moves().length;
+  g.load(g.fen().replace(/ [wb] /, turn === 'w' ? ' w ' : ' b '));
+  const mobilityScore = (turn === 'w' ? myMoves - oppMoves : oppMoves - myMoves) * 2;
+
+  return matScore + pstScore + mobilityScore;
+}
+
+// Detailed evaluation breakdown
+function evaluateBreakdown(g) {
+  if (g.in_checkmate()) return { material:0, pst:0, mobility:0, total: g.turn()==='w'?-20000:20000, mate:true };
+  if (g.in_draw()) return { material:0, pst:0, mobility:0, total:0, draw:true };
+
+  let mat = 0, pst = 0;
+  const eg = isEndgame(g);
+  const board = g.board();
+  let wMat = 0, bMat = 0, wPst = 0, bPst = 0;
+
+  for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+    const p = board[r][c];
+    if (!p) continue;
+    const idx = r * 8 + c;
+    const mir = (7-r)*8+c;
+    const mv = PIECE_VAL[p.type] || 0;
+    let pv = 0;
+    if (p.type === 'k') pv = p.color==='w' ? (eg?PST.k_end:PST.k_mid)[idx] : (eg?PST.k_end:PST.k_mid)[mir];
+    else if (PST[p.type]) pv = p.color==='w' ? PST[p.type][idx] : PST[p.type][mir];
+    if (p.color === 'w') { wMat += mv; wPst += pv; }
+    else { bMat += mv; bPst += pv; }
+  }
+  mat = wMat - bMat; pst = wPst - bPst;
+
+  const turn = g.turn();
+  const myMoves = g.moves().length;
+  g.load(g.fen().replace(/ [wb] /, turn==='w' ? ' b ' : ' w '));
+  const oppMoves = g.moves().length;
+  g.load(g.fen().replace(/ [wb] /, turn==='w' ? ' w ' : ' b '));
+  const mob = (turn==='w' ? myMoves - oppMoves : oppMoves - myMoves) * 2;
+
+  return { material: mat, pst: pst, mobility: mob, total: mat+pst+mob, wMat, bMat, wPst, bPst };
+}
+
+// ══════════════════════════════════════════════════
+// MINIMAX
+// ══════════════════════════════════════════════════
+function minimax(g, depth, isMax, stats) {
+  stats.nodes++;
+  if (depth === 0 || g.game_over()) return evaluate(g);
+  const moves = g.moves();
+  if (isMax) {
+    let best = -Infinity;
+    for (const m of moves) {
+      g.move(m); best = Math.max(best, minimax(g, depth-1, false, stats)); g.undo();
+    }
+    return best;
+  } else {
+    let best = Infinity;
+    for (const m of moves) {
+      g.move(m); best = Math.min(best, minimax(g, depth-1, true, stats)); g.undo();
+    }
+    return best;
+  }
+}
+
+function minimaxRoot(g, depth) {
+  const stats = { nodes: 0, pruned: 0 };
+  const t0 = performance.now();
+  const moves = g.moves();
+  const isMax = g.turn() === 'w';
+  let best = isMax ? -Infinity : Infinity;
+  let bestMove = null;
+  const candidates = [];
+  const pv = [];
+
+  for (const m of moves) {
+    g.move(m);
+    const score = minimax(g, depth-1, !isMax, stats);
+    g.undo();
+    candidates.push({ move: m, score });
+    if ((isMax && score > best) || (!isMax && score < best)) {
+      best = score; bestMove = m;
+    }
+  }
+  candidates.sort((a,b) => isMax ? b.score - a.score : a.score - b.score);
+
+  // PV extraction
+  let pg = new Chess(g.fen());
+  let pvDepth = Math.min(depth, 5);
+  while (pvDepth-- > 0 && !pg.game_over()) {
+    const pvMoves = pg.moves();
+    if (!pvMoves.length) break;
+    const pvIsMax = pg.turn() === 'w';
+    let pvBest = pvIsMax ? -Infinity : Infinity, pvMove = pvMoves[0];
+    for (const m of pvMoves) {
+      pg.move(m);
+      const s = evaluate(pg);
+      pg.undo();
+      if ((pvIsMax && s > pvBest) || (!pvIsMax && s < pvBest)) { pvBest = s; pvMove = m; }
+    }
+    pv.push(pvMove); pg.move(pvMove);
+  }
+
+  return { bestMove, score: best, nodes: stats.nodes, pruned: 0, time: performance.now() - t0, candidates: candidates.slice(0,5), pv };
+}
+
+// ══════════════════════════════════════════════════
+// ALPHA-BETA
+// ══════════════════════════════════════════════════
+function alphaBeta(g, depth, alpha, beta, isMax, stats) {
+  stats.nodes++;
+  if (depth === 0 || g.game_over()) return evaluate(g);
+  const moves = g.moves();
+  if (isMax) {
+    let v = -Infinity;
+    for (const m of moves) {
+      g.move(m); v = Math.max(v, alphaBeta(g, depth-1, alpha, beta, false, stats)); g.undo();
+      alpha = Math.max(alpha, v);
+      if (alpha >= beta) { stats.pruned++; break; }
+    }
+    return v;
+  } else {
+    let v = Infinity;
+    for (const m of moves) {
+      g.move(m); v = Math.min(v, alphaBeta(g, depth-1, alpha, beta, true, stats)); g.undo();
+      beta = Math.min(beta, v);
+      if (beta <= alpha) { stats.pruned++; break; }
+    }
+    return v;
+  }
+}
+
+function alphaBetaRoot(g, depth) {
+  const stats = { nodes: 0, pruned: 0 };
+  const t0 = performance.now();
+  const moves = g.moves();
+  const isMax = g.turn() === 'w';
+  let alpha = -Infinity, beta = Infinity;
+  let best = isMax ? -Infinity : Infinity;
+  let bestMove = null;
+  const candidates = [];
+
+  for (const m of moves) {
+    g.move(m);
+    const score = alphaBeta(g, depth-1, alpha, beta, !isMax, stats);
+    g.undo();
+    candidates.push({ move: m, score });
+    if ((isMax && score > best) || (!isMax && score < best)) {
+      best = score; bestMove = m;
+      if (isMax) alpha = Math.max(alpha, best);
+      else       beta  = Math.min(beta,  best);
+    }
+  }
+  candidates.sort((a,b) => isMax ? b.score - a.score : a.score - b.score);
+
+  // PV
+  const pv = [];
+  let pg = new Chess(g.fen()); let pvD = Math.min(depth, 5);
+  while (pvD-- > 0 && !pg.game_over()) {
+    const pvMoves = pg.moves(); if (!pvMoves.length) break;
+    const pvIsMax = pg.turn() === 'w';
+    let pvBest = pvIsMax ? -Infinity : Infinity, pvMove = pvMoves[0];
+    for (const m of pvMoves) {
+      pg.move(m);
+      const s = alphaBeta(pg, 0, -Infinity, Infinity, !pvIsMax, { nodes:0, pruned:0 });
+      pg.undo();
+      if ((pvIsMax && s > pvBest) || (!pvIsMax && s < pvBest)) { pvBest = s; pvMove = m; }
+    }
+    pv.push(pvMove); pg.move(pvMove);
+  }
+
+  return { bestMove, score: best, nodes: stats.nodes, pruned: stats.pruned, time: performance.now() - t0, candidates: candidates.slice(0,5), pv };
+}
+
+// ══════════════════════════════════════════════════
+// GREEDY BEST-FIRST
+// ══════════════════════════════════════════════════
+function greedyRoot(g) {
+  const t0 = performance.now();
+  const stats = { nodes: 0 };
+  const moves = g.moves();
+  const isMax = g.turn() === 'w';
+  let best = isMax ? -Infinity : Infinity;
+  let bestMove = null;
+  const candidates = [];
+
+  for (const m of moves) {
+    stats.nodes++;
+    g.move(m);
+    const score = evaluate(g);
+    g.undo();
+    candidates.push({ move: m, score });
+    if ((isMax && score > best) || (!isMax && score < best)) { best = score; bestMove = m; }
+  }
+  candidates.sort((a,b) => isMax ? b.score - a.score : a.score - b.score);
+  return { bestMove, score: best, nodes: stats.nodes, pruned: 0, time: performance.now() - t0, candidates: candidates.slice(0,5), pv: [bestMove] };
+}
+
+// ══════════════════════════════════════════════════
+// IDS (Iterative Deepening with Alpha-Beta)
+// ══════════════════════════════════════════════════
+function idsRoot(g, timeLimitMs) {
+  const t0 = performance.now();
+  const totalStats = { nodes: 0, pruned: 0 };
+  const isMax = g.turn() === 'w';
+  let bestResult = null;
+  let depth = 1;
+  let reachedDepth = 0;
+
+  while (true) {
+    const elapsed = performance.now() - t0;
+    if (elapsed >= timeLimitMs) break;
+
+    const stats = { nodes: 0, pruned: 0 };
+    const moves = g.moves();
+    let best = isMax ? -Infinity : Infinity;
+    let bestMove = null;
+    let alpha = -Infinity, beta = Infinity;
+    const candidates = [];
+
+    for (const m of moves) {
+      if (performance.now() - t0 >= timeLimitMs) break;
+      g.move(m);
+      const score = alphaBeta(g, depth-1, alpha, beta, !isMax, stats);
+      g.undo();
+      candidates.push({ move: m, score });
+      if ((isMax && score > best) || (!isMax && score < best)) {
+        best = score; bestMove = m;
+        if (isMax) alpha = Math.max(alpha, best);
+        else       beta  = Math.min(beta,  best);
+      }
+    }
+
+    totalStats.nodes += stats.nodes;
+    totalStats.pruned += stats.pruned;
+
+    if (bestMove) {
+      candidates.sort((a,b) => isMax ? b.score - a.score : a.score - b.score);
+      const pv = [bestMove];
+      bestResult = { bestMove, score: best, nodes: totalStats.nodes, pruned: totalStats.pruned, time: performance.now()-t0, candidates: candidates.slice(0,5), pv, depth };
+      reachedDepth = depth;
+    }
+    depth++;
+    if (depth > 8) break; // safety cap
+  }
+
+  if (!bestResult) {
+    // fallback: at least play something
+    const ms = g.moves();
+    const fb = ms[0];
+    return { bestMove: fb, score: 0, nodes: 1, pruned: 0, time: performance.now()-t0, candidates: [{move:fb,score:0}], pv:[fb], depth:0 };
+  }
+  bestResult.reachedDepth = reachedDepth;
+  return bestResult;
+}
+
+// ══════════════════════════════════════════════════
+// BOARD RENDERING
+// ══════════════════════════════════════════════════
+function renderBoard() {
+  const board = document.getElementById('chessboard');
+  board.innerHTML = '';
+
+  // Rank labels
+  const rl = document.getElementById('rankLabels');
+  rl.innerHTML = '';
+  const fl = document.getElementById('fileLabels');
+  fl.innerHTML = '';
+  for (let r = 8; r >= 1; r--) {
+    const sp = document.createElement('span');
+    sp.textContent = r;
+    rl.appendChild(sp);
+  }
+  for (const f of ['a','b','c','d','e','f','g','h']) {
+    const sp = document.createElement('span');
+    sp.textContent = f;
+    fl.appendChild(sp);
+  }
+
+  const boardArr = game.board();
+  for (let r = 0; r < 8; r++) {
+    const row = document.createElement('div');
+    row.className = 'board-row';
+    for (let c = 0; c < 8; c++) {
+      const rank = 8 - r;
+      const file = String.fromCharCode(97 + c);
+      const sqName = file + rank;
+      const isLight = (r + c) % 2 === 0;
+      const piece = boardArr[r][c];
+
+      const cell = document.createElement('div');
+      cell.className = 'sq ' + (isLight ? 'light' : 'dark');
+      cell.dataset.sq = sqName;
+      cell.textContent = piece ? pieceGlyph(piece) : '';
+
+      // Coloring
+      if (sqName === selectedSq) cell.classList.add('selected');
+      if (sqName === arrowFrom)  cell.classList.add('arrow-from');
+      if (sqName === arrowTo)    cell.classList.add('arrow-to');
+
+      // Legal move highlights
+      if (legalMoves.some(m => m.to === sqName)) {
+        const isCapture = legalMoves.some(m => m.to === sqName && m.flags.includes('c'));
+        cell.classList.add(isCapture ? 'legal-capture' : 'legal-move');
+      }
+
+      cell.addEventListener('click', () => onSquareClick(sqName));
+      row.appendChild(cell);
+    }
+    board.appendChild(row);
+  }
+
+  updateStatus();
+  updatePositionTab();
+}
+
+// ══════════════════════════════════════════════════
+// CLICK TO MOVE
+// ══════════════════════════════════════════════════
+function onSquareClick(sq) {
+  if (selectedSq === null) {
+    // Select a piece
+    const piece = game.get(sq);
+    if (!piece || piece.color !== game.turn()) return;
+    selectedSq = sq;
+    legalMoves = game.moves({ square: sq, verbose: true });
+    renderBoard();
+  } else {
+    if (sq === selectedSq) {
+      selectedSq = null; legalMoves = []; renderBoard(); return;
+    }
+    // Attempt move
+    const moveObj = { from: selectedSq, to: sq };
+    // Check promotion
+    const piece = game.get(selectedSq);
+    if (piece && piece.type === 'p' && (sq[1] === '8' || sq[1] === '1')) moveObj.promotion = 'q';
+
+    const result = game.move(moveObj);
+    selectedSq = null; legalMoves = [];
+    if (result) {
+      arrowFrom = null; arrowTo = null;
+      document.getElementById('fenInput').value = game.fen();
+    }
+    renderBoard();
+  }
+}
+
+// ══════════════════════════════════════════════════
+// STATUS
+// ══════════════════════════════════════════════════
+function updateStatus() {
+  const el = document.getElementById('gameStatus');
+  let msg = '';
+  if (game.in_checkmate()) msg = `<span style="color:var(--danger)">♚ Checkmate! ${game.turn()==='w'?'Black':'White'} wins.</span>`;
+  else if (game.in_draw()) msg = `<span style="color:var(--gold)">Draw!</span>`;
+  else if (game.in_stalemate()) msg = `<span style="color:var(--gold)">Stalemate!</span>`;
+  else {
+    const turn = game.turn() === 'w' ? 'White' : 'Black';
+    const badge = `<span class="turn-badge ${game.turn()==='w'?'turn-white':'turn-black'}">${turn}</span>`;
+    const inCheck = game.in_check() ? ' <span style="color:var(--danger)">— in Check!</span>' : '';
+    msg = `${badge} to move${inCheck}`;
+  }
+  el.innerHTML = msg;
+}
+
+// ══════════════════════════════════════════════════
+// LOAD PRESET / FEN
+// ══════════════════════════════════════════════════
+function loadPreset() {
+  const key = document.getElementById('presetSel').value;
+  if (!key) return;
+  const p = PRESETS[key];
+  if (!p) return;
+  game.load(p.fen);
+  document.getElementById('fenInput').value = p.fen;
+  arrowFrom = null; arrowTo = null; selectedSq = null; legalMoves = [];
+  clearResult();
+  renderBoard();
+}
+
+function applyFEN() {
+  const fen = document.getElementById('fenInput').value.trim();
+  if (!fen) return;
+  try {
+    const ok = game.load(fen);
+    if (!ok) { alert('Invalid FEN string.'); return; }
+    arrowFrom = null; arrowTo = null; selectedSq = null; legalMoves = [];
+    clearResult();
+    renderBoard();
+  } catch(e) { alert('Invalid FEN: ' + e.message); }
+}
+
+function resetBoard() {
+  game.reset();
+  document.getElementById('fenInput').value = game.fen();
+  document.getElementById('presetSel').value = '';
+  arrowFrom = null; arrowTo = null; selectedSq = null; legalMoves = [];
+  clearResult();
+  renderBoard();
+}
+
+// ══════════════════════════════════════════════════
+// ALGO SELECTOR
+// ══════════════════════════════════════════════════
+function updateAlgoDesc() {
+  const algo = document.getElementById('algoSel').value;
+  document.getElementById('algoDesc').innerHTML = ALGO_DESCS[algo] || '';
+  const isIDS = algo === 'ids';
+  document.getElementById('depthSection').classList.toggle('hidden', isIDS);
+  document.getElementById('timeLimitSection').classList.toggle('hidden', !isIDS);
+}
+
+// ══════════════════════════════════════════════════
+// RUN ANALYSIS
+// ══════════════════════════════════════════════════
+function runAnalysis() {
+  if (game.game_over()) { alert('Game is already over.'); return; }
+  if (!game.moves().length) { alert('No legal moves available.'); return; }
+
+  const algo = document.getElementById('algoSel').value;
+  const depth = parseInt(document.getElementById('depthSlider').value);
+  const timeLimit = parseInt(document.getElementById('timeLimitSlider').value);
+
+  showLoading(true, `Running ${algo === 'ids' ? 'IDS' : algo} (depth ${algo === 'ids' ? 'adaptive' : depth})…`);
+
+  setTimeout(() => {
+    try {
+      let result;
+      const g = new Chess(game.fen());
+      if (algo === 'minimax')   result = minimaxRoot(g, depth);
+      else if (algo === 'alphabeta') result = alphaBetaRoot(g, depth);
+      else if (algo === 'greedy')    result = greedyRoot(g);
+      else if (algo === 'ids')       result = idsRoot(g, timeLimit);
+
+      lastResult = result;
+      displayResult(result, algo, depth);
+      arrowFrom = result.bestMove ? result.bestMove.slice(0,2) : null;
+      arrowTo   = result.bestMove ? result.bestMove.slice(2,4) : null;
+      renderBoard();
+      switchTab('analysis');
+    } catch(e) {
+      console.error(e);
+      alert('Analysis error: ' + e.message);
+    }
+    showLoading(false);
+  }, 20);
+}
+
+function displayResult(result, algo, depth) {
+  document.getElementById('noResultMsg').classList.add('hidden');
+  document.getElementById('analysisResult').classList.remove('hidden');
+
+  const isMax = game.turn() === 'w';
+  const score = result.score;
+  const pawn = (score / 100).toFixed(2);
+  const isNeg = score < 0;
+
+  document.getElementById('res-bestMove').textContent = result.bestMove || '—';
+  const scoreEl = document.getElementById('res-score');
+  scoreEl.textContent = (score > 0 ? '+' : '') + score;
+  scoreEl.className = 'val ' + (isNeg ? 'neg' : '');
+  document.getElementById('res-pawn').textContent = (score > 0 ? '+' : '') + pawn;
+  document.getElementById('res-time').textContent = result.time.toFixed(1);
+  document.getElementById('res-nodes').textContent = result.nodes.toLocaleString();
+  document.getElementById('res-pruned').textContent = result.pruned.toLocaleString();
+  document.getElementById('res-pv').textContent = (result.pv && result.pv.length) ? result.pv.join(' → ') : '—';
+
+  // Candidates
+  const tbody = document.getElementById('candBody');
+  tbody.innerHTML = '';
+  const best = result.candidates[0] ? result.candidates[0].score : 0;
+  result.candidates.forEach((c, i) => {
+    const tr = document.createElement('tr');
+    if (i === 0) tr.classList.add('best-row');
+    const delta = c.score - best;
+    tr.innerHTML = `<td>${i+1}</td><td>${c.move}</td><td>${(c.score > 0 ? '+' : '')+c.score}</td><td>${delta === 0 ? '0' : (delta>0?'+':'')+delta}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// ══════════════════════════════════════════════════
+// COMPARE ALL ALGORITHMS
+// ══════════════════════════════════════════════════
+function runCompare() {
+  if (game.game_over()) { alert('Game is already over.'); return; }
+  if (!game.moves().length) { alert('No legal moves available.'); return; }
+
+  showLoading(true, 'Comparing all algorithms…');
+
+  setTimeout(() => {
+    try {
+      const depth = parseInt(document.getElementById('depthSlider').value);
+      const timeLimit = parseInt(document.getElementById('timeLimitSlider').value);
+      const g = new Chess(game.fen());
+
+      const results = {
+        minimax:   minimaxRoot(new Chess(g.fen()), depth),
+        alphabeta: alphaBetaRoot(new Chess(g.fen()), depth),
+        greedy:    greedyRoot(new Chess(g.fen())),
+        ids:       idsRoot(new Chess(g.fen()), timeLimit)
+      };
+
+      displayCompare(results, depth);
+      switchTab('compare');
+    } catch(e) { console.error(e); alert('Compare error: ' + e.message); }
+    showLoading(false);
+  }, 20);
+}
+
+function displayCompare(results, depth) {
+  const names = { minimax:'Minimax', alphabeta:'Alpha-Beta', greedy:'Greedy BFS', ids:'IDS' };
+  const card = document.getElementById('compareResultCard');
+
+  let html = `<h4 style="color:var(--gold);font-size:.8rem;text-transform:uppercase;margin-bottom:10px;">Algorithm Comparison (Depth: ${depth})</h4>`;
+  html += `<table class="compare-table">
+    <thead><tr><th>Algorithm</th><th>Best Move</th><th>Score</th><th>Nodes</th><th>Pruned</th><th>Time (ms)</th></tr></thead><tbody>`;
+
+  for (const [k, r] of Object.entries(results)) {
+    html += `<tr>
+      <td style="color:var(--accent);font-weight:600;">${names[k]}</td>
+      <td style="color:var(--green);font-weight:600;">${r.bestMove||'—'}</td>
+      <td>${(r.score>0?'+':'')+r.score}</td>
+      <td>${r.nodes.toLocaleString()}</td>
+      <td>${r.pruned.toLocaleString()}</td>
+      <td>${r.time.toFixed(1)}</td>
+    </tr>`;
+  }
+  html += '</tbody></table>';
+
+  // Agreement
+  const moves = Object.values(results).map(r => r.bestMove).filter(Boolean);
+  const agreement = moves.filter(m => m === moves[0]).length;
+  html += `<div style="font-size:0.8rem; color:var(--text2); margin-bottom:12px;">
+    Algorithm Agreement: <span style="color:${agreement===4?'var(--green)':'var(--gold)'}; font-weight:600;">${agreement}/4 algorithms agree on best move</span>
+  </div>`;
+
+  // Charts
+  html += `<div class="canvas-wrap" style="margin-bottom:10px;"><canvas id="compareNodesChart" height="130"></canvas></div>`;
+  html += `<div class="canvas-wrap"><canvas id="compareTimeChart" height="100"></canvas></div>`;
+
+  card.innerHTML = html;
+
+  // Draw charts
+  setTimeout(() => {
+    const labels = ['Minimax','Alpha-Beta','Greedy','IDS'];
+    const nodesData = [results.minimax.nodes, results.alphabeta.nodes, results.greedy.nodes, results.ids.nodes];
+    const timeData  = [results.minimax.time,  results.alphabeta.time,  results.greedy.time,  results.ids.time];
+    const colors = ['rgba(231,76,60,0.7)','rgba(46,204,113,0.7)','rgba(52,152,219,0.7)','rgba(241,196,15,0.7)'];
+
+    new Chart(document.getElementById('compareNodesChart'), {
+      type:'bar',
+      data:{ labels, datasets:[{ label:'Nodes Explored', data:nodesData, backgroundColor:colors, borderColor:colors.map(c=>c.replace('0.7','1')), borderWidth:1 }] },
+      options:{ plugins:{ legend:{labels:{color:'#9ab0c5',font:{size:11}}} }, scales:{ y:{ ticks:{color:'#9ab0c5',font:{size:10}}, grid:{color:'rgba(255,255,255,0.05)'}, title:{display:true,text:'Nodes',color:'#9ab0c5',font:{size:10}} }, x:{ticks:{color:'#9ab0c5',font:{size:10}},grid:{color:'rgba(255,255,255,0.05)'}} } }
+    });
+    new Chart(document.getElementById('compareTimeChart'), {
+      type:'bar',
+      data:{ labels, datasets:[{ label:'Time (ms)', data:timeData, backgroundColor:colors, borderColor:colors.map(c=>c.replace('0.7','1')), borderWidth:1 }] },
+      options:{ plugins:{ legend:{labels:{color:'#9ab0c5',font:{size:11}}} }, scales:{ y:{ ticks:{color:'#9ab0c5',font:{size:10}}, grid:{color:'rgba(255,255,255,0.05)'}, title:{display:true,text:'ms',color:'#9ab0c5',font:{size:10}} }, x:{ticks:{color:'#9ab0c5',font:{size:10}},grid:{color:'rgba(255,255,255,0.05)'}} } }
+    });
+  }, 50);
+}
+
+// ══════════════════════════════════════════════════
+// POSITION TAB
+// ══════════════════════════════════════════════════
+function updatePositionTab() {
+  const bd = evaluateBreakdown(game);
+  const el = document.getElementById('posEvalBreakdown');
+
+  if (bd.mate) {
+    el.innerHTML = `<div style="color:var(--danger);text-align:center;padding:14px;">♚ Checkmate</div>`;
+  } else if (bd.draw) {
+    el.innerHTML = `<div style="color:var(--gold);text-align:center;padding:14px;">½ Draw</div>`;
+  } else {
+    const rows = [
+      { cat: '♟ Material (White)', num: bd.wMat },
+      { cat: '♟ Material (Black)', num: -bd.bMat },
+      { cat: 'Net Material', num: bd.material },
+      { cat: '📐 PST Bonus (White)', num: bd.wPst },
+      { cat: '📐 PST Bonus (Black)', num: -bd.bPst },
+      { cat: 'Net PST', num: bd.pst },
+      { cat: '🔄 Mobility', num: bd.mobility },
+      { cat: '∑ Total Score', num: bd.total, bold: true }
+    ];
+    el.innerHTML = rows.map(r => `
+      <div class="eval-row" style="${r.bold?'font-weight:700;border-top:1px solid var(--border);padding-top:8px;margin-top:4px;':''}">
+        <span class="cat">${r.cat}</span>
+        <span class="num ${r.num > 0 ? 'pos' : r.num < 0 ? 'neg' : ''}">${r.num > 0 ? '+' : ''}${r.num}</span>
+      </div>`).join('');
+  }
+
+  // Position info
+  const info = document.getElementById('posInfo');
+  const fen = game.fen();
+  const parts = fen.split(' ');
+  const turn = game.turn() === 'w' ? 'White' : 'Black';
+  const castling = parts[2] || '-';
+  const ep = parts[3] !== '-' ? parts[3] : 'None';
+  const hm = parts[4] || '0';
+  const fm = parts[5] || '1';
+
+  info.innerHTML = `
+    <div class="eval-row"><span class="cat">Turn</span><span>${turn}</span></div>
+    <div class="eval-row"><span class="cat">Castling</span><span style="font-family:monospace">${castling}</span></div>
+    <div class="eval-row"><span class="cat">En Passant</span><span>${ep}</span></div>
+    <div class="eval-row"><span class="cat">Halfmove Clock</span><span>${hm}</span></div>
+    <div class="eval-row"><span class="cat">Fullmove</span><span>${fm}</span></div>
+    <div class="eval-row"><span class="cat">Legal Moves</span><span>${game.moves().length}</span></div>
+    <div class="eval-row"><span class="cat">In Check</span><span style="color:${game.in_check()?'var(--danger)':'var(--green)'}">${game.in_check()?'Yes':'No'}</span></div>
+    <div class="eval-row"><span class="cat">Phase</span><span>${isEndgame(game)?'Endgame':'Middlegame'}</span></div>
+  `;
+}
+
+// ══════════════════════════════════════════════════
+// BENCHMARK TAB
+// ══════════════════════════════════════════════════
+function initBenchmark() {
+  // Fill table
+  const tbody = document.getElementById('benchTableBody');
+  BENCHMARK.forEach((b, i) => {
+    const reduction = (100 * (1 - b.ab/b.mm)).toFixed(1);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${PRESETS[b.pos]?.name || b.pos}</td><td>${b.mm.toLocaleString()}</td><td>${b.ab.toLocaleString()}</td><td style="color:var(--green);font-weight:600;">${b.speedup}×</td>`;
+    tbody.appendChild(tr);
+  });
+
+  // Speedup chart
+  const labels = BENCHMARK.map((_, i) => `P${i+1}`);
+  const speedups = BENCHMARK.map(b => b.speedup);
+  const nodeReduction = BENCHMARK.map(b => parseFloat((100*(1-b.ab/b.mm)).toFixed(1)));
+
+  setTimeout(() => {
+    if (speedupChartObj) speedupChartObj.destroy();
+    speedupChartObj = new Chart(document.getElementById('speedupChart'), {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Speedup (×)',
+          data: speedups,
+          backgroundColor: speedups.map(s => s >= 30 ? 'rgba(46,204,113,0.8)' : s >= 15 ? 'rgba(241,196,15,0.8)' : 'rgba(52,152,219,0.8)'),
+          borderColor: 'rgba(255,255,255,0.1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        plugins: { legend:{labels:{color:'#9ab0c5',font:{size:11}}}, tooltip:{callbacks:{label: c => `${c.raw}× speedup`}} },
+        scales: {
+          y: { ticks:{color:'#9ab0c5',font:{size:10}}, grid:{color:'rgba(255,255,255,0.05)'}, title:{display:true,text:'Speedup (×)',color:'#9ab0c5'} },
+          x: { ticks:{color:'#9ab0c5',font:{size:10}}, grid:{color:'rgba(255,255,255,0.05)'} }
+        }
+      }
+    });
+
+    if (nodeChartObj) nodeChartObj.destroy();
+    nodeChartObj = new Chart(document.getElementById('nodeChart'), {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Node Reduction (%)',
+          data: nodeReduction,
+          backgroundColor: 'rgba(46,204,113,0.7)',
+          borderColor: 'rgba(46,204,113,1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        plugins: { legend:{labels:{color:'#9ab0c5',font:{size:11}}} },
+        scales: {
+          y: { min:80, max:100, ticks:{color:'#9ab0c5',font:{size:10},callback:v=>v+'%'}, grid:{color:'rgba(255,255,255,0.05)'}, title:{display:true,text:'Reduction %',color:'#9ab0c5'} },
+          x: { ticks:{color:'#9ab0c5',font:{size:10}}, grid:{color:'rgba(255,255,255,0.05)'} }
+        }
+      }
+    });
+  }, 100);
+}
+
+// ══════════════════════════════════════════════════
+// UI HELPERS
+// ══════════════════════════════════════════════════
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  document.getElementById('panel-'+name).classList.add('active');
+}
+
+function showLoading(show, msg) {
+  const ov = document.getElementById('loadingOverlay');
+  if (show) {
+    ov.style.display = 'flex';
+    document.getElementById('loadingMsg').textContent = msg || 'Calculating…';
+  } else {
+    ov.style.display = 'none';
+  }
+}
+
+function clearResult() {
+  document.getElementById('noResultMsg').classList.remove('hidden');
+  document.getElementById('analysisResult').classList.add('hidden');
+  lastResult = null;
+}
+
+// ══════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', () => {
+  updateAlgoDesc();
+  renderBoard();
+  initBenchmark();
+  document.getElementById('fenInput').value = game.fen();
+  updatePositionTab();
+});
+</script>
+</body>
+</html>

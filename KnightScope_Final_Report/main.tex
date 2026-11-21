@@ -20,7 +20,7 @@
 \begin{tabular}{rl}
 \textbf{Team:} & Deep Knights (4 members)\\
 \textbf{Application:} & Interactive chess position analyser\\
-\textbf{Implementation:} & Python, Streamlit, python-chess and Plotly\\
+\textbf{Implementation:} & Python search engine and interactive web interface\\
 \textbf{Submission date:} & 21 November 2026
 \end{tabular}
 \vfill{\large Department of Computer Science and Engineering\par}
@@ -30,7 +30,7 @@
 We declare that KnightScope was developed as a course project by Team Deep Knights. The project implements its own Minimax, Alpha-Beta, Greedy, and Iterative Deepening procedures. The \texttt{python-chess} library is used for board state, legal-move generation, FEN handling, and chess-rule validation. No external chess engine, chess API, neural model, or precomputed engine evaluation is used to select moves.
 
 \chapter*{Abstract}\addcontentsline{toc}{chapter}{Abstract}
-KnightScope is a Python application for analysing a chess position with classical artificial-intelligence search. A user supplies a FEN position, selects a method and depth, and receives a recommended move, a heuristic score, candidate moves, a principal variation, and search statistics. The implementation contains depth-limited Minimax, Alpha-Beta Pruning, a one-ply Greedy baseline, and Iterative Deepening built from Alpha-Beta searches. Its evaluation function combines material, piece-square values, mobility, centre control, king safety, pawn structure, and bishop-pair information.
+KnightScope is a Python-based chess-analysis project with an interactive web demonstration. A user can arrange a position, import a FEN position, set the side to move and search depth, then receive a recommended move, heuristic score, principal variation, and search statistics. The Python implementation contains depth-limited Minimax, Alpha-Beta Pruning, a one-ply Greedy baseline, and Iterative Deepening built from Alpha-Beta searches. Its evaluation function combines material, piece-square values, mobility, centre control, king safety, pawn structure, and bishop-pair information.
 
 The stored experiments cover ten legal chess positions. Alpha-Beta matched Minimax's move and score in all 30 position-depth comparisons while visiting fewer nodes at depths two and three. At depth three, the mean recorded node reduction was 94.11\% and the mean recorded speed-up was 29.31$\times$. Greedy agreed with the depth-three adversarial choice in two of ten cases. The report documents a current limitation: Iterative Deepening checks its budget between completed iterations, so one deep iteration can overrun the requested limit. The report presents design, evidence, limitations, and future work without claiming professional chess-engine strength.
 
@@ -71,13 +71,13 @@ V(s,d)=\begin{cases}U(s)&\text{if }s\text{ is terminal}\\H(s)&\text{if }d=0\\
 
 \chapter{System Design and Implementation}
 \section{Architecture}
-The project separates the interface, chess utilities, search engines, evaluation function, benchmark scripts, tests, and documentation. Streamlit provides FEN input and controls. The engine package implements search. The analysis package runs experiments and writes CSV files. This separation lets the same engine functions support the application, automated tests, and experiments.
+The project separates the interface, chess utilities, search engines, evaluation function, benchmark scripts, tests, and documentation. The Python engine package implements search and the analysis package runs experiments and writes CSV files. The public browser interface demonstrates position editing, FEN import/export, board flipping, depth selection, and Alpha-Beta move analysis. This separation lets the same engine functions support the application, automated tests, and experiments.
 
 \begin{table}[H]\centering\caption{Core technology choices}
 \begin{tabular}{p{0.30\textwidth}p{0.55\textwidth}}\toprule
 Technology & Purpose\\\midrule
 Python & Main implementation language\\
-Streamlit & Interactive dashboard\\
+HTML, CSS, and JavaScript & Public interactive board and browser demonstration\\
 python-chess & Legal moves, board state, FEN validation, and chess rules\\
 Plotly and Matplotlib & Interactive and report visualisation\\
 Pandas and NumPy & Benchmark tables and aggregation\\
@@ -112,14 +112,23 @@ Greedy evaluates every immediate successor and selects the best one-ply score fo
 \section{Iterative Deepening}
 Iterative Deepening runs Alpha-Beta at depth 1, then 2, and so on, preserving the result of the last completed search. The present program checks a time budget before and after each full Alpha-Beta iteration. It does not interrupt a search that is already running, which is a known limitation.
 
-\chapter{User Interface}
-The Streamlit dashboard exposes FEN import and validation, algorithm selection, depth and time controls, candidate moves, principal variation, node and timing statistics, comparison charts, and a board view.
+\chapter{User Interface and Demonstration}
+The public interface lets the user move, add, and remove pieces; choose a side to move; change castling flags; flip the board; load a FEN; and run Alpha-Beta analysis at depth one to three. The demonstration website is available at \url{https://knightscope-classic.onrender.com}. The source repository is \url{https://github.com/HaMaMi-1/KnightScope}.
 \begin{figure}[H]\centering
-\includegraphics[width=0.92\textwidth]{../documentation/screenshots/app_dashboard_overview.png}
-\caption{KnightScope analysis dashboard}\end{figure}
+\includegraphics[width=0.92\textwidth]{images/initial-position.png}
+\caption{Interactive board in its starting configuration}\end{figure}
 \begin{figure}[H]\centering
-\includegraphics[width=0.92\textwidth]{../documentation/screenshots/app_algorithm_comparison.png}
-\caption{Algorithm comparison view}\end{figure}
+\includegraphics[width=0.92\textwidth]{images/forced-mate.png}
+\caption{Forced-mate demonstration: the interface recommends Qxf7\# at depth two}\end{figure}
+
+\section{Representative Interactive Results}
+The following screenshots document individual demonstration runs. They are not a controlled depth comparison because each position differs. Their purpose is to show the working editor, side-to-move handling, recommended move, explored-node count, elapsed time, and principal variation.
+\begin{figure}[H]\centering
+\includegraphics[width=0.92\textwidth]{images/tactical-depth3.png}
+\caption{Depth-three tactical position: Nxe5, 1,423 explored nodes, and 0.161 seconds}\end{figure}
+\begin{figure}[H]\centering
+\includegraphics[width=0.92\textwidth]{images/custom-position.png}
+\caption{Custom sparse position: Kc2, 671 explored nodes, and 0.031 seconds}\end{figure}
 
 \chapter{Experimental Method}
 The stored experiments use ten legal positions covering opening, tactical, defensive, checkmate, endgame, and middlegame cases. For Minimax and Alpha-Beta, the benchmark compares depths one through three. The timing procedure runs a search three times and reports the median duration. Each result records best move, score, explored nodes, pruned sibling moves, execution time, and nodes per second.
@@ -143,7 +152,7 @@ Depth & Cases & Score match & Move match & Mean reduction & Range & Mean speed-u
 3 & 10 & 10/10 & 10/10 & 94.11\% & 78.74--98.87\% & 29.31$\times$\\\bottomrule
 \end{tabular}\end{table}
 \begin{figure}[H]\centering
-\includegraphics[width=0.88\textwidth]{../documentation/figures/minimax_vs_alphabeta_chart.png}
+\includegraphics[width=0.88\textwidth]{images/minimax_vs_alphabeta_chart.png}
 \caption{Stored benchmark chart comparing Minimax and Alpha-Beta}\end{figure}
 
 \section{Greedy Baseline}
@@ -186,10 +195,12 @@ Member 4 & Streamlit interface, visualisation, benchmarking, and documentation.\
 \item D. E. Knuth and R. W. Moore, ``An Analysis of Alpha-Beta Pruning,'' \textit{Artificial Intelligence}, vol. 6, no. 4, pp. 293--326, 1975.
 \item R. E. Korf, ``Depth-first Iterative-Deepening: An Optimal Admissible Tree Search,'' \textit{Artificial Intelligence}, vol. 27, no. 1, pp. 97--109, 1985.
 \item python-chess documentation, \url{https://python-chess.readthedocs.io/}.
+\item KnightScope source repository, \url{https://github.com/HaMaMi-1/KnightScope}.
+\item KnightScope public demonstration, \url{https://knightscope-classic.onrender.com}.
 \end{enumerate}
 \appendix
 \chapter{Reproducibility Guide}
-Install requirements with \texttt{pip install -r requirements.txt}. Start the dashboard with \texttt{streamlit run app.py}. Run tests with \texttt{pytest -q}. Regenerate experiment CSV files with \texttt{python -m analysis.experiments}. Timing results vary by CPU, package versions, and background load.
+Install requirements with \texttt{pip install -r requirements.txt}. Run tests with \texttt{pytest -q}. Regenerate experiment CSV files with \texttt{python -m analysis.experiments}. Open the public demonstration at \url{https://knightscope-classic.onrender.com}. Timing results vary by CPU, package versions, and background load.
 \chapter{Selected Search Pseudocode}
 \begin{lstlisting}
 function ALPHABETA(state, depth, alpha, beta):
